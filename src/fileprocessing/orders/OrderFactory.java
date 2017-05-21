@@ -1,10 +1,48 @@
 package fileprocessing.orders;
 
 /**
- * Created by Noy on 21-May-17.
+ * A factory for creating Order out of a given string.
+ *
+ * @author Aviad Nissel, Noy Stern-Licht
  */
 public class OrderFactory {
-    public static Order createOrder(String orderString){
+
+
+    /* --- Constants --- */
+
+    private final static String EMPTY_ORDER = "";
+    private final static String ABS_ORDER = "abs";
+    private final static String TYPE_ORDER = "type";
+    private final static String SIZE_ORDER = "size";
+
+
+    /* --- Public Static Methods --- */
+
+    /**
+     * Creates an order from the given string.
+     * @param orderString The order string. One line only, without the ORDER line.
+     *                    May have #REVERSE at the end. May be an empty string.
+     * @return The appropriate Order object.
+     */
+    public static Order createOrder(String orderString) {
+        String[] split = orderString.split("\\#");
+        String actualOrder = split[0];
+        boolean reverse = false;
+        if (split.length > 1) {
+            // We assume that after # comes REVERSE
+            reverse = true;
+        }
+        switch (actualOrder) {
+            case EMPTY_ORDER:
+                // Same as ABS_ORDER, so no break!
+            case ABS_ORDER:
+                return new AbsOrder(reverse);
+            case TYPE_ORDER:
+                return new TypeOrder(reverse);
+            case SIZE_ORDER:
+                return new SizeOrder(reverse);
+        }
+        // TODO Raise exception
         return null;
     }
 }

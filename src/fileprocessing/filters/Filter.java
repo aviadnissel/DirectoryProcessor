@@ -8,10 +8,10 @@ import java.util.List;
  * Created by Noy on 21-May-17.
  */
 abstract public class Filter {
+    private boolean not = false;
     public Filter(boolean not){
         this.not = not;
     }
-    private boolean not = false;
     public List<File> filterFiles(List<File> files){
         List<File> matched = new ArrayList<>();
         for (File file: files) {

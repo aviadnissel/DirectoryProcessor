@@ -19,11 +19,10 @@ public class FilterFactory {
      * @param filterString: The FILTER subsection.
      * @return: A list contains the name, argument, and possibly the "NOT" suffix of the filter.
      */
-    private static List<String> split(String filterString){ // TODO: to test.
+    public static List<String> split(String filterString){ // TODO: to test. //TODO: To make private.
         String[] helper = filterString.split("//#");
         List<String> data = new ArrayList<>();
         data.addAll(Arrays.asList(helper)); // TODO: Verify we can use it.
-        System.out.println(data);
         return data;
     }
 
@@ -43,7 +42,7 @@ public class FilterFactory {
      */
     public static Filter createFilter(String filterString){ // TODO: to test
         List<String> data = split(filterString);
-        Filter filter = new All(true); // Default filter.
+        Filter filter = new AllFilter(true); // Default filter.
 
         if (data.size() > 0){ // If filterString is not empty.
             String name = data.get(NAME_INDEX);
@@ -51,11 +50,11 @@ public class FilterFactory {
                 String filterArgument1 = data.get(1);
                 boolean not = ifNot(data);
                 switch (name){
-                    case "greater_than": filter = new GreaterThan(filterArgument1, not); // TODO: Magic?
+                    case "greater_than": filter = new GreaterThanFilter(filterArgument1, not); // TODO: Magic?
                         break;
                     case "between":
                         String filterArgument2 = data.get(1); // Todo: there might be a bad input (only 1 argument) **(Not mentioned in PDF)
-                        filter = new Between(filterArgument1, filterArgument2, not);
+                        filter = new BetweenFilter(filterArgument1, filterArgument2, not);
                         break;
                 }
             }
@@ -63,6 +62,8 @@ public class FilterFactory {
         return filter;
     }
 }
+
+
 
 
 

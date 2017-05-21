@@ -9,15 +9,19 @@ import java.io.File;
 /**
  * This class represents the "all" filter - The filter which returns all the files in the directory.
  */
-public class All extends Filter {
+public class AllFilter extends Filter {
+
+     /* --- Constructors --- */
+
     /**
      * Creates all filter.
      * @param not: If false all files are matched, otherwise none of them is a match.
      */
-    public All(boolean not){
+    public AllFilter(boolean not){
         super(not);
     }
 
+     /* --- Methods --- */
     /**
      * Returns true for each File object.
      * @param file: The file object to be tested.

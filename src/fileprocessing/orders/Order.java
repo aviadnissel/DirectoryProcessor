@@ -6,7 +6,7 @@ import java.util.Comparator;
 import java.util.List;
 
 /**
- * An abstract Order. All orders inherit from it.
+ * An abstract Order. AllFilter orders inherit from it.
  *
  * @author Aviad Nissel, Noy Stern-Licht
  */

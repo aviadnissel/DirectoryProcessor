@@ -6,7 +6,7 @@ import java.util.Comparator;
 /**
  * Order by file type.
  *
- * @author Aviad Nissel, Noy Stern-Licht
+ * @author Aviad Nissel, Noy Sternlicht
  */
 public class TypeOrder extends Order {
 

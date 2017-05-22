@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * An abstract Order. AllFilter orders inherit from it.
  *
- * @author Aviad Nissel, Noy Stern-Licht
+ * @author Aviad Nissel, Noy Sternlicht
  */
 abstract public class Order {
 

@@ -1,11 +1,12 @@
 package fileprocessing.orders;
 
+import fileprocessing.exceptions.warnings.BadNameWarning;
 import fileprocessing.exceptions.warnings.FileProcessingWarning;
 
 /**
  * A factory for creating Order out of a given string.
  *
- * @author Aviad Nissel, Noy Stern-Licht
+ * @author Aviad Nissel, Noy Sternlicht
  */
 public class OrderFactory {
 
@@ -44,7 +45,6 @@ public class OrderFactory {
             case SIZE_ORDER:
                 return new SizeOrder(reverse);
         }
-        // TODO Raise exception
-        return null;
+        throw new BadNameWarning("Unknown order " + orderString, 1);
     }
 }

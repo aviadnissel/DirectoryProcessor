@@ -6,7 +6,7 @@ import java.util.Comparator;
 /**
  * Order by absolute path.
  *
- * @author Aviad Nissel, Noy Stern-Licht
+ * @author Aviad Nissel, Noy Sternlicht
  */
 public class AbsOrder extends Order {
 

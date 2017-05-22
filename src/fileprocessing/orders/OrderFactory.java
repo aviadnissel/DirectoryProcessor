@@ -1,5 +1,7 @@
 package fileprocessing.orders;
 
+import fileprocessing.exceptions.warnings.FileProcessingWarning;
+
 /**
  * A factory for creating Order out of a given string.
  *
@@ -24,7 +26,7 @@ public class OrderFactory {
      *                    May have #REVERSE at the end. May be an empty string.
      * @return The appropriate Order object.
      */
-    public static Order createOrder(String orderString) {
+    public static Order createOrder(String orderString)  throws FileProcessingWarning {
         String[] split = orderString.split("\\#");
         String actualOrder = split[0];
         boolean reverse = false;

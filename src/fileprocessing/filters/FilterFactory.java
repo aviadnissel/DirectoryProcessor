@@ -3,6 +3,8 @@
  */
 
 package fileprocessing.filters;
+import fileprocessing.exceptions.warnings.FileProcessingWarning;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -11,18 +13,26 @@ import java.util.List;
  * This class creates Filter objects according to the FILTER subsection in command file.
  */
 public class FilterFactory {
+
+
+    /* --- Constants --- */
+
     private static final int NAME_INDEX = 0;
     private static final String DEFAULT_NAME = "all";
+    private static final String SEPARATOR = "#";
+
+
+    /* --- Private Methods --- */
 
     /**
      * Splits The FILTER subsection by the character "#".
      * @param filterString: The FILTER subsection.
      * @return: A list contains the name, argument, and possibly the "NOT" suffix of the filter.
      */
-    public static List<String> split(String filterString){ // TODO: to test. //TODO: To make private.
-        String[] helper = filterString.split("//#");
+    private static List<String> split(String filterString){
+        String[] helper = filterString.split(SEPARATOR);
         List<String> data = new ArrayList<>();
-        data.addAll(Arrays.asList(helper)); // TODO: Verify we can use it.
+        data.addAll(Arrays.asList(helper));
         return data;
     }
 
@@ -35,16 +45,19 @@ public class FilterFactory {
         return data.get(data.size() - 1).equals("NOT");
     }
 
+
+    /* --- Public Static Methods --- */
+
     /**
      * Creates a Filter object according the FILTER subsection in command file.
      * @param filterString: The FILTER subsection.
      * @return: The desired filtered object.
      */
-    public static Filter createFilter(String filterString){ // TODO: to test
+    public static Filter createFilter(String filterString) throws FileProcessingWarning{
         List<String> data = split(filterString);
         Filter filter = new AllFilter(true); // Default filter.
 
-        if (data.size() > 0){ // If filterString is not empty.
+        if (data.size() > 0){ // If filterString is not empty. // TODO: switch on "" and return All.
             String name = data.get(NAME_INDEX);
             if(!name.equals(DEFAULT_NAME)){
                 String filterArgument1 = data.get(1);

@@ -3,6 +3,7 @@
  */
 
 package fileprocessing.filters;
+import fileprocessing.DirectoryProcessor;
 import fileprocessing.exceptions.warnings.FileProcessingWarning;
 
 import java.util.ArrayList;
@@ -48,18 +49,37 @@ public class FilterFactory {
         return data;
     }
 
-    private static boolean testInput(String argument1, String argument2, String testKind){
+    private static boolean testInput(String name, String argument1, String argument2, String testKind){
+
         switch (testKind){
-            case "domain negative numbers":
-                break;
+            case "domain negative doubles":
+                if (argument2 != null){
+                    return Double.parseDouble(argument1) >= 0 && Double.parseDouble(argument2) >= 0;
+                }
+                return Double.parseDouble(argument1) >= 0;
+
             case "bad filter name":
-                break;
+            String[] legalNames = {EMPTY, ALL_FILTER, BETWEEN_FILTER, CONTAINS_FILTER, EXECUTABLE_FILTER
+            ,       FILE_FILTER, GREATER_THAN_FILTER, HIDDEN_FILTER, PREFIX_FILTER, SMALLER_THAN_FILTER,
+                    SUFFIX_FILTER, WRITABLE_FILTER};
+            return Arrays.asList(legalNames).contains(name);
+
             case "domain YES/NO":
-                break;
+                return argument1.equals("NO") || argument1.equals("YES");
+
             case "domain int":
-                break;
+                try{
+                    Double.parseDouble(argument1);
+                    if (argument2 != null){
+                        Double.parseDouble(argument2);
+                    }
+                }catch(NumberFormatException numberException){
+                    return false;
+                }
+                return true;
+
             case "domain legal between":
-                break;
+                return Double.parseDouble(argument1) <= Integer.parseInt(argument2);
         }
         return true;
     }

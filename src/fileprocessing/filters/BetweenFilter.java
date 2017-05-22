@@ -5,7 +5,6 @@
 package fileprocessing.filters;
 import java.io.File;
 
-//TODO: to test.
 /**
  * This class represents a filter which returns files with size between two given numbers (inclusive).
  */
@@ -28,11 +27,13 @@ public class BetweenFilter extends Filter{
      */
     public BetweenFilter(String lowerBound, String upperBound, boolean not){
         super(not);
-        this.lowerBound = Integer.parseInt(lowerBound) * KBYTES_TO_BYTES; // TODO: we should verify this is not a bad data (not in the domain, or negatives/ not integers)
+        this.lowerBound = Integer.parseInt(lowerBound) * KBYTES_TO_BYTES;
         this.upperBound = Integer.parseInt(upperBound) * KBYTES_TO_BYTES;
     }
 
     /* --- Methods --- */
+
+    @Override
 
     /**
      * Returns true if the file size is between lowerBound and upperBound.

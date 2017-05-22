@@ -14,15 +14,27 @@ import java.util.List;
  */
 public class FilterFactory {
 
-
     /* --- Constants --- */
 
     private static final int NAME_INDEX = 0;
-    private static final String DEFAULT_NAME = "all";
+    private static final int ARGUMENT1_INDEX = 1;
+    private static final int ARGUMENT2_INDEX = 2;
+    private static final String BETWEEN_FILTER = "between";
+    private static final String GREATER_THAN_FILTER = "greater_than";
+    private static final String ALL_FILTER= "all";
+    private static final String CONTAINS_FILTER = "contains";
+    private static final String EXECUTABLE_FILTER = "executable";
+    private static final String HIDDEN_FILTER = "hidden";
+    private static final String FILE_FILTER = "file";
+    private static final String PREFIX_FILTER = "prefix";
+    private static final String SMALLER_THAN_FILTER = "smaller_than";
+    private static final String SUFFIX_FILTER = "suffix";
+    private static final String WRITABLE_FILTER = "writable";
     private static final String SEPARATOR = "#";
+    private static final String EMPTY = "";
 
 
-    /* --- Private Methods --- */
+    /* --- Private Static Methods --- */
 
     /**
      * Splits The FILTER subsection by the character "#".
@@ -34,6 +46,22 @@ public class FilterFactory {
         List<String> data = new ArrayList<>();
         data.addAll(Arrays.asList(helper));
         return data;
+    }
+
+    private static boolean testInput(String argument1, String argument2, String testKind){
+        switch (testKind){
+            case "domain negative numbers":
+                break;
+            case "bad filter name":
+                break;
+            case "domain YES/NO":
+                break;
+            case "domain int":
+                break;
+            case "domain legal between":
+                break;
+        }
+        return true;
     }
 
     /**
@@ -54,23 +82,40 @@ public class FilterFactory {
      * @return: The desired filtered object.
      */
     public static Filter createFilter(String filterString) throws FileProcessingWarning{
+
         List<String> data = split(filterString);
         Filter filter = new AllFilter(true); // Default filter.
 
-        if (data.size() > 0){ // If filterString is not empty. // TODO: switch on "" and return All.
-            String name = data.get(NAME_INDEX);
-            if(!name.equals(DEFAULT_NAME)){
-                String filterArgument1 = data.get(1);
-                boolean not = ifNot(data);
-                switch (name){
-                    case "greater_than": filter = new GreaterThanFilter(filterArgument1, not); // TODO: Magic?
-                        break;
-                    case "between":
-                        String filterArgument2 = data.get(1); // Todo: there might be a bad input (only 1 argument) **(Not mentioned in PDF)
-                        filter = new BetweenFilter(filterArgument1, filterArgument2, not);
-                        break;
-                }
-            }
+        String name = data.get(NAME_INDEX);
+        String filterArgument1 = data.get(ARGUMENT1_INDEX);
+        boolean not = ifNot(data);
+
+        switch (name){
+            case EMPTY : filter = new AllFilter(not); // default filter.
+                break;
+            case GREATER_THAN_FILTER: filter = new GreaterThanFilter(filterArgument1, not);
+                break;
+            case BETWEEN_FILTER:
+                String filterArgument2 = data.get(ARGUMENT2_INDEX);
+                filter = new BetweenFilter(filterArgument1, filterArgument2, not);
+                break;
+            case ALL_FILTER: filter = new AllFilter(not); // TODO: Is it ok that it is a duplicate?
+                break;
+            case CONTAINS_FILTER: filter = new ContainsFilter(filterArgument1, not);
+                break;
+            case EXECUTABLE_FILTER: filter = new ExecutableFilter(filterArgument1, not);
+                break;
+            case FILE_FILTER: filter = new FileFilter(filterArgument1, not);
+                break;
+            case HIDDEN_FILTER: filter = new HiddenFilter(filterArgument1, not);
+                break;
+            case PREFIX_FILTER: filter = new PrefixFilter(filterArgument1, not);
+                break;
+            case SUFFIX_FILTER: filter = new SuffixFilter(filterArgument1, not);
+                break;
+            case  WRITABLE_FILTER: filter = new WritableFilter(filterArgument1, not);
+                break;
+
         }
         return filter;
     }

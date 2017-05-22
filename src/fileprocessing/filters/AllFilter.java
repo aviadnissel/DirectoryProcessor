@@ -22,7 +22,10 @@ public class AllFilter extends Filter {
     }
 
      /* --- Methods --- */
-    /**
+
+     @Override
+
+     /**
      * Returns true for each File object.
      * @param file: The file object to be tested.
      * @return true.

@@ -5,13 +5,13 @@ import java.io.File;
  * Created by Noy Sternlicht on 21-May-17.
  */
 
-//TODO: to test.
 
 /**
  * This class represents a filter which returns files with size strictly bigger than a given
  * number (in K-bytes)
  */
 public class GreaterThanFilter extends Filter {
+
     private static final int KBYTES_TO_BYTES = 1024;
     private int greaterThan;
 
@@ -24,11 +24,13 @@ public class GreaterThanFilter extends Filter {
      */
     public GreaterThanFilter(String greaterThan, Boolean not){
         super(not);
-        this.greaterThan = (Integer.parseInt(greaterThan)) * KBYTES_TO_BYTES;  // TODO: We should verify it is not a bad data (like "text" or "-6")
+        this.greaterThan = (Integer.parseInt(greaterThan)) * KBYTES_TO_BYTES;
 
     }
 
     /* --- Methods --- */
+
+    @Override
 
     /**
      * Returns true if the tested file's size is bigger than "greaterThan", false otherwise.

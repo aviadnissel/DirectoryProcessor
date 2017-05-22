@@ -11,6 +11,7 @@ import java.io.File;
  * to a given word (YES for hidden, NO for not hidden).
  */
 public class HiddenFilter extends Filter {
+
     private String yesOrNo;
 
 
@@ -24,22 +25,18 @@ public class HiddenFilter extends Filter {
      */
     public HiddenFilter(String yesOrNo, boolean not){
         super(not);
-        this.yesOrNo = yesOrNo; // TODO: might be a bad input.
+        this.yesOrNo = yesOrNo;
     }
 
     /* --- Methods --- */
 
+    @Override
     /**
      * Tests if a file match the filter.
      * @param file: The file to be tested.
      * @return: True if the file passed the filter, false otherwise.
      */
     public boolean isMatch(File file){
-        return (!(file.isHidden()) ^ (yesOrNo.equals("YES"))); // TODO : test this little shit
+        return (!(file.isHidden()) ^ (yesOrNo.equals("YES")));
     }
-    // TODO: remove later, for tests:
-    // file hidden & yes == true // true
-    // file hidden & no == false // false
-    // file not hidden & yes == false // false
-    // file not hidden & no == true // true
 }

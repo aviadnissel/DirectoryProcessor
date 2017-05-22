@@ -11,8 +11,10 @@ import java.io.File;
  * number (in K-bytes)
  */
 public class SmallerThanFilter extends Filter {
+
     private static final int KBYTES_TO_BYTES = 1024;
     private int smallerThan;
+
 
     /* --- Constructors --- */
 
@@ -23,10 +25,13 @@ public class SmallerThanFilter extends Filter {
      */
     public SmallerThanFilter(String smallerThan, Boolean not){
         super(not);
-        this.smallerThan = (Integer.parseInt(smallerThan)) * KBYTES_TO_BYTES;  // TODO: We should verify it is not a bad data (like "text" or "-6")
+        this.smallerThan = (Integer.parseInt(smallerThan)) * KBYTES_TO_BYTES;
     }
 
     /* --- Methods --- */
+
+
+    @Override
 
     /**
      * Returns true if the tested file's size is smaller than "smallerThan", false otherwise.

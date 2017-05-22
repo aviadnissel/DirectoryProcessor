@@ -1,20 +1,40 @@
-package fileprocessing.filters;
+/**
+ * Created by Noy Sternlicht on 22-May-17.
+ */
 
+package fileprocessing.filters;
 import java.io.File;
 
+
 /**
- * Created by Noy on 22-May-17.
+ * This class represents a filter tha returns only files with name equals to a given value (excluding path).
  */
 public class FileFilter extends Filter {
-    private final String name;
 
-    public FileFilter(String name, boolean not) {
+    private String value;
+
+    /* --- Constructor --- */
+
+    /**
+     * Creates a new "file" filter.
+     * @param value: Files with names equals to value match the filter.
+     * @param not: If true the files that doesn't match the filter are returned. Otherwise the files that
+     *             match it are returned.
+     */
+    public FileFilter(String value, boolean not) {
         super(not);
-        this.name = name;
+        this.value = value;
     }
 
+    /* --- Methods --- */
+
+    /**
+     * Tests if a file matches the filter.
+     * @param file: The file to be tested.
+     * @return True if the file matches the filter, false otherwise.
+     */
     @Override
     public boolean isMatch(File file) {
-        return false;
+        return value.equals(file.getName());
     }
 }

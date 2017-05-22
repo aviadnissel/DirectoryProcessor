@@ -32,7 +32,7 @@ public class HiddenFilter extends Filter {
 
     @Override
     /**
-     * Tests if a file match the filter.
+     * Tests if a file matches the filter.
      * @param file: The file to be tested.
      * @return: True if the file passed the filter, false otherwise.
      */

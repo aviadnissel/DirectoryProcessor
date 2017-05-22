@@ -9,12 +9,12 @@ import java.io.File;
  */
 public class test {
     public static void main(String[] args) throws FileProcessingWarning {
-//        File test = new File("noy/is/pretty.txt");
-//        System.out.println(test.isHidden());
+        File test = new File("noy/is/pretty.txt");
+        System.out.println(test.getName());
 //        HiddenFilter filter = new HiddenFilter("NO", false);
 //        System.out.println(filter.isMatch(test));
 
-        System.out.println(FilterFactory.createFilter("between#10#2"));
+//        System.out.println(FilterFactory.createFilter("between#10#2"));
 
 
 

@@ -3,6 +3,9 @@
  */
 
 package fileprocessing.filters;
+import fileprocessing.exceptions.warnings.BadBetweenDomain;
+import fileprocessing.exceptions.warnings.BadNameWarning;
+import fileprocessing.exceptions.warnings.BadParametersWarning;
 import fileprocessing.exceptions.warnings.FileProcessingWarning;
 
 import java.util.ArrayList;
@@ -19,10 +22,9 @@ public class FilterFactory {
     private static final int NAME_INDEX = 0;
     private static final int ARGUMENT1_INDEX = 1;
     private static final int ARGUMENT2_INDEX = 2;
-    private static final int DOMAIN_NON_NEGATIVE_TEST = 0;
-    private static final int DOMAIN_YES_NO_TEST = 2;
-    private static final int DOMAIN_IS_DOUBLE_TEST = 3;
-    private static final int DOMAIN_BETWEEN_TEST = 4;
+    private static final int DOMAIN_YES_NO_TEST = 0;
+    private static final int DOMAIN_IS_LEGAL_DOUBLE_TEST = 1;
+    private static final int DOMAIN_BETWEEN_TEST = 2;
 
 
     /* --- Filters Names & String Constants --- */
@@ -39,9 +41,13 @@ public class FilterFactory {
     private static final String SUFFIX_FILTER = "suffix";
     private static final String WRITABLE_FILTER = "writable";
     private static final String SEPARATOR = "#";
-    private static final String EMPTY = "";
     private static final String LEGAL_NO = "NO";
     private static final String LEGAL_YES = "YES";
+    private static final String BAD_DOMAIN_YES_NO_MSG = "Argument mast be ether 'YES' or 'NO'.";
+    private static final String BAD_DOMAIN_DOUBLE_MSG = "The filter gets only non-negative doubles.";
+    private static final String BAD_DOMAIN_BETWEEN_MSG = "The second argument mast be bigger than the first.";
+    private static final String BAD_FILTER_NAME_MSG = "The second argument mast be bigger than the first.";
+
 
 
     /* --- Private Static Methods --- */
@@ -101,12 +107,10 @@ public class FilterFactory {
     private static boolean testInput(String name, String argument1, String argument2, int testKind){
 
         switch (testKind){
-            case DOMAIN_NON_NEGATIVE_TEST:
-               return isNonNegative(argument1, argument2);
             case DOMAIN_YES_NO_TEST:
                 return argument1.equals(LEGAL_NO) || argument1.equals(LEGAL_YES);
-            case DOMAIN_IS_DOUBLE_TEST:
-                return testIfDouble(argument1, argument2);
+            case DOMAIN_IS_LEGAL_DOUBLE_TEST:
+                return testIfDouble(argument1, argument2) && isNonNegative(argument1, argument2); // TODO: test precedence
             case DOMAIN_BETWEEN_TEST:
                 return Double.parseDouble(argument1) <= Integer.parseInt(argument2);
         }
@@ -133,66 +137,78 @@ public class FilterFactory {
     public static Filter createFilter(String filterString) throws FileProcessingWarning{
 
         List<String> data = split(filterString);
-        Filter filter = new AllFilter(true); // Default filter.
-
         String name = data.get(NAME_INDEX);
-        String filterArgument1 = data.get(ARGUMENT1_INDEX);
+        String argument1;
         boolean not = ifNot(data);
 
         switch (name){
-            case EMPTY : filter = new AllFilter(not); // default filter.
-                break;
-            case GREATER_THAN_FILTER: filter = new GreaterThanFilter(filterArgument1, not);
-                break;
-            case SMALLER_THAN_FILTER: filter = new SmallerThanFilter(filterArgument1, not);
-                break;
-            case BETWEEN_FILTER:
-                String filterArgument2 = data.get(ARGUMENT2_INDEX);
-                filter = new BetweenFilter(filterArgument1, filterArgument2, not);
-                break;
-            case ALL_FILTER: filter = new AllFilter(not); // TODO: Is it ok that it is a duplicate?
-                break;
-            case CONTAINS_FILTER: filter = new ContainsFilter(filterArgument1, not);
-                break;
-            case EXECUTABLE_FILTER: filter = new ExecutableFilter(filterArgument1, not);
-                break;
-            case FILE_FILTER: filter = new FileFilter(filterArgument1, not);
-                break;
-            case HIDDEN_FILTER: filter = new HiddenFilter(filterArgument1, not);
-                break;
-            case PREFIX_FILTER: filter = new PrefixFilter(filterArgument1, not);
-                break;
-            case SUFFIX_FILTER: filter = new SuffixFilter(filterArgument1, not);
-                break;
-            case  WRITABLE_FILTER: filter = new WritableFilter(filterArgument1, not);
-                break;
+            case GREATER_THAN_FILTER:
+                argument1 = data.get(ARGUMENT1_INDEX);
+                if(testInput(name, argument1, null, DOMAIN_IS_LEGAL_DOUBLE_TEST)){
+                    return new GreaterThanFilter(argument1, not);
+                }
+                throw new BadParametersWarning(BAD_DOMAIN_DOUBLE_MSG, 1);
 
+            case SMALLER_THAN_FILTER:
+                argument1 = data.get(ARGUMENT1_INDEX);
+                if(testInput(name,argument1, null, DOMAIN_IS_LEGAL_DOUBLE_TEST)){
+                    return new SmallerThanFilter(argument1, not);
+                }
+                throw new BadParametersWarning(BAD_DOMAIN_DOUBLE_MSG, 1);
+
+            case BETWEEN_FILTER:
+                argument1 = data.get(ARGUMENT1_INDEX);
+                String argument2 = data.get(ARGUMENT2_INDEX);
+
+                if(testInput(name, argument1, argument2, DOMAIN_IS_LEGAL_DOUBLE_TEST)){
+                    if(testInput(name, argument1, argument2, DOMAIN_BETWEEN_TEST)){
+                        return new BetweenFilter(argument1, argument2, not);
+                    }
+                    throw new BadBetweenDomain(BAD_DOMAIN_BETWEEN_MSG, 1);
+                }
+                throw new BadParametersWarning(BAD_DOMAIN_DOUBLE_MSG, 1);
+
+            case ALL_FILTER:
+                return new AllFilter(not);
+
+            case CONTAINS_FILTER:
+                argument1 = data.get(ARGUMENT1_INDEX);
+                return new ContainsFilter(argument1, not);
+
+            case EXECUTABLE_FILTER:
+                argument1 = data.get(ARGUMENT1_INDEX);
+                if(testInput(name, argument1, null, DOMAIN_YES_NO_TEST)){
+                    return new ExecutableFilter(argument1, not);
+                }
+                throw new BadParametersWarning(BAD_DOMAIN_YES_NO_MSG, 1);
+
+            case FILE_FILTER:
+                argument1 = data.get(ARGUMENT1_INDEX);
+                return new FileFilter(argument1, not);
+
+            case HIDDEN_FILTER:
+                argument1 = data.get(ARGUMENT1_INDEX);
+                if(testInput(name, argument1, null, DOMAIN_YES_NO_TEST)){
+                    return new HiddenFilter(argument1, not);
+                }
+                throw new BadParametersWarning(BAD_DOMAIN_YES_NO_MSG, 1);
+
+            case PREFIX_FILTER:
+                argument1 = data.get(ARGUMENT1_INDEX);
+                return new PrefixFilter(argument1, not);
+
+            case SUFFIX_FILTER:
+                argument1 = data.get(ARGUMENT1_INDEX);
+                return new SuffixFilter(argument1, not);
+
+            case  WRITABLE_FILTER:
+                argument1 = data.get(ARGUMENT1_INDEX);
+                if(testInput(name, argument1, null, DOMAIN_YES_NO_TEST)){
+                    return new WritableFilter(argument1, not);
+                }
+                throw new BadParametersWarning(BAD_DOMAIN_YES_NO_MSG, 1);
+
+            default: throw new BadNameWarning(BAD_FILTER_NAME_MSG, 1); // Todo: create filter CANNOT throw the exception and return all filter. main should call it again with the arguments needed for all filter.
         }
-        return filter;
     }
 }
-
-
-//TODO: Delete if not needed:
-
-//    /**
-//     * Tests if a filter name is legal.
-//     * @param name: The name to be tested.
-//     * @returns: True if the name is legal, false otherwise.
-//     */
-//    private static boolean isNameLegal(String name){
-//        String[] legalNames = {EMPTY, ALL_FILTER, BETWEEN_FILTER, CONTAINS_FILTER, EXECUTABLE_FILTER
-//                ,       FILE_FILTER, GREATER_THAN_FILTER, HIDDEN_FILTER, PREFIX_FILTER, SMALLER_THAN_FILTER,
-//                SUFFIX_FILTER, WRITABLE_FILTER};
-//        return Arrays.asList(legalNames).contains(name);
-//    }
-
-
-
-//            case BAD_NAME_TEST:
-//                return isNameLegal(name);
-
-
-
-//    private static final int BAD_NAME_TEST = 1;
-

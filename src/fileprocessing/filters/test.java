@@ -7,9 +7,11 @@ import java.io.File;
  */
 public class test {
     public static void main(String[] args) {
-        File test = new File("noy/is/pretty.txt");
-        System.out.println(test.isHidden());
-        HiddenFilter filter = new HiddenFilter("NO", false);
-        System.out.println(filter.isMatch(test));
+//        File test = new File("noy/is/pretty.txt");
+//        System.out.println(test.isHidden());
+//        HiddenFilter filter = new HiddenFilter("NO", false);
+//        System.out.println(filter.isMatch(test));
+
+        System.out.println( FilterFactory.testInput("noy", "-1", "5", "domain negative doubles" ));
     }
 }

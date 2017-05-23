@@ -5,7 +5,9 @@
 package fileprocessing;
 import fileprocessing.exceptions.FileProcessingException;
 import fileprocessing.exceptions.errors.*;
+import fileprocessing.exceptions.warnings.FileProcessingWarning;
 import fileprocessing.sections.Section;
+import fileprocessing.sections.SectionFactory;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -20,7 +22,13 @@ public class DirectoryProcessor {
     /* --- Constants --- */
     private static final String IO_ERROR_MESSAGE = "ERROR: An error occurred while accessing commandfile";
     private static final String INVALID_USAGE_ERROR_MESSAGE = "ERROR: Line arguments are invalid.";
+    private static final String LINE_SEPARATOR = "/n";
+    private static final String DEFAULT_SECTION_STRING = "";
     private static final int LINE_NOT_NEEDED = -1;
+    private static final int SECTION_SIZE = 3;
+    private static final String WARNINGS_MESSAGE = "Warning in line";
+    private static final String BAD_FORMAT_ERROR_MESSAGE = "Error: The file format is not valid.";
+    private static final String BAD_SUBSECTION_NAME_MESSAGE = "Error: Subsections names are not valid.";
 
 
 
@@ -36,7 +44,7 @@ public class DirectoryProcessor {
     private static void testInvalidUsage(String[] args) throws InvalidUsageError {
         File sourceDir = new File(args[0]);
         File commandsFile = new File(args[1]);
-        if((args.length != 1) || !sourceDir.exists() || !commandsFile.exists()){
+        if((args.length != 2) || !sourceDir.exists() || !commandsFile.exists()){
             throw new InvalidUsageError(INVALID_USAGE_ERROR_MESSAGE, LINE_NOT_NEEDED);
         }
     }
@@ -98,13 +106,80 @@ public class DirectoryProcessor {
      * @param commandFileLines: A list of commandsfile lines.
      * @returns A list of sections strings.
      */
-    private static List<String> createSectionsText(List<String> commandFileLines){
+    private static List<String> createSectionsText(List<String> commandFileLines){  //TODO: The last "/n" won't ruin anything?
 
-        return null;
+        List<String> sectionsStrings = new ArrayList<>();
+        String section = DEFAULT_SECTION_STRING;
+        int counter = 0;
+
+        for (String commandFileLine : commandFileLines) {
+            // If the reviewed line is still inside the section part, the method concatenate it to "section":
+            if (counter <= SECTION_SIZE) {
+                section += (commandFileLine + LINE_SEPARATOR);
+                counter +=1;
+            }
+
+            // Else it creates a new section string:
+            else{
+                sectionsStrings.add(section);
+                counter = 1;
+                section = (commandFileLine + LINE_SEPARATOR);
+            }
+        }
+
+        sectionsStrings.add(section); // Adds the last section.
+
+        return sectionsStrings;
     }
 
-    private static List<Section> createSections(List<String> sectionsText) throws FileProcessingException{  //Here the program catches the errors from section factory & the warnings from F.factory, O.factory.
-        return null;
+    /**
+     *
+     * @param warning
+     * @throws FileProcessingWarning
+     */
+    private static void handleWarnings(FileProcessingWarning warning) throws  FileProcessingWarning{ // TODO: To compute lines. //TODO: It should print it in a certain order!
+        int line = warning.getLine();
+        System.err.println(WARNINGS_MESSAGE + line);
+    }
+
+    /**
+     *
+     * @param sectionsText
+     * @return
+     * @throws FileProcessingException
+     */
+    private static List<Section> testFactoriesExceptions(List<String> sectionsText)
+            throws FileProcessingException{
+
+        List<Section> sectionsList = new ArrayList<>();
+        try{
+            for (String sectionText: sectionsText) {
+                sectionsList.add(SectionFactory.createSection(sectionText));
+            }
+
+        } catch (BadFormatError badFormatError){
+            System.err.println(BAD_FORMAT_ERROR_MESSAGE);
+            System.exit(1);
+
+        } catch (BadSubSectionNameError badSubSectionNameError){
+            System.err.println(BAD_SUBSECTION_NAME_MESSAGE);
+            System.exit(1);
+
+        } catch (FileProcessingWarning warning){
+            handleWarnings(warning);
+        }
+
+        return sectionsList;
+    }
+
+    /**
+     *
+     * @param sectionsText
+     * @return
+     * @throws FileProcessingException
+     */
+    private static List<Section> createSections(List<String> sectionsText) throws FileProcessingException{
+        return testFactoriesExceptions(sectionsText);
     }
 
     private static void printOutput(List<Section> sections){ // TODO: (to delete): uses the Section class method getFiles in order to get the list of files to print.
@@ -123,12 +198,10 @@ public class DirectoryProcessor {
      */
     public static void main(String[] args) throws FileProcessingException{
         List<String> commandsFileLines = runBasicTests(args);
-//        List<String> sectionsTextList = createSectionsText(commandsFileLines);
-//        List<Section> sectionsList = createSections(sectionsTextList);
+        List<String> sectionsTextList = createSectionsText(commandsFileLines);
+        List<Section> sectionsList = createSections(sectionsTextList);
 //
 //        printOutput(sectionsList);
 
     }
 }
-
-// TODO: to delete if not needed:

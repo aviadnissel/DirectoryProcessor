@@ -133,6 +133,7 @@ public class FilterFactory {
      * Creates a Filter object according the FILTER subsection in command file.
      * @param filterString: The FILTER subsection.
      * @return: The desired filtered object.
+     * @throws:  FileProcessingWarning
      */
     public static Filter createFilter(String filterString) throws FileProcessingWarning{
 

@@ -1,5 +1,5 @@
 /**
- * @Author: Noy Sternlicht
+ * @Author: Aviad Nissel, Noy Sternlicht
  */
 
 package fileprocessing;
@@ -19,18 +19,26 @@ public class DirectoryProcessor {
 
     /* --- Constants --- */
     private static final String IO_ERROR_MESSAGE = "ERROR: An error occurred while accessing commandfile";
+    private static final String INVALID_USAGE_ERROR_MESSAGE = "ERROR: Line arguments are invalid.";
+    private static final int LINE_NOT_NEEDED = -1;
+
 
 
     /*--- Private Static Methods ---*/
 
     /* --- Errors Testers --- */
 
-    private static boolean testInvalidUsage(String[] args) throws InvalidUsageError {
-        // rise when:
-        // args.length< 1
-        // args[0], args[1] are not strings.
-        // maybe to test with "file.exist()" if such files exists.
-        return true;
+    /**
+     * Tests if the command line arguments are ok.
+     * @param args: Command line arguments.
+     * @throws InvalidUsageError
+     */
+    private static void testInvalidUsage(String[] args) throws InvalidUsageError {
+        File sourceDir = new File(args[0]);
+        File commandsFile = new File(args[1]);
+        if((args.length != 1) || !sourceDir.exists() || !commandsFile.exists()){
+            throw new InvalidUsageError(INVALID_USAGE_ERROR_MESSAGE, LINE_NOT_NEEDED);
+        }
     }
 
     /**
@@ -40,41 +48,57 @@ public class DirectoryProcessor {
      * @returns: A list that contains the file lines.
      * @throws IoProblemsError
      */
-    private static List<String> testIoProblems(String[] args)throws IOException{ // TODO: I think we should unify those two exceptions somehow (maybe we should cancel the costume exception?)
+    private static List<String> testIoProblems(String[] args)throws IoProblemsError{
         File commandsFile = new File(args[1]);
         List<String> commandsFileLines = new ArrayList<>();
 
-        // Tries to read from the commands file:
+        // Tries to read the commands file:
         try(BufferedReader bufferedReader = new BufferedReader( new FileReader(commandsFile))){
             String line;
             while ((line = bufferedReader.readLine()) != null){
                 commandsFileLines.add(line);
+                }
             }
-            }catch(IOException exception){
-            System.err.println(IO_ERROR_MESSAGE);
-            System.exit(1);
+            catch(IOException exception){
+            throw new IoProblemsError(IO_ERROR_MESSAGE, LINE_NOT_NEEDED);
             }
         return commandsFileLines;
-    }
+        }
 
 
     /* --- Main Methods --- */
 
     /**
      * Runs invalidUsage test and ioProblems test and handle the errors if there are.
-     * @param args
+     * @param args: Command line arguments.
      * @returns: If the commands file passed the tested, returns is. Throws the relevant error otherwise.
      */
     private static List<String> runBasicTests(String[] args) throws FileProcessingError{
-        return null;
+
+        try {
+            testInvalidUsage(args);
+        } catch (InvalidUsageError invalidUsageError){
+            System.err.println(INVALID_USAGE_ERROR_MESSAGE);
+            System.exit(1);
+        }
+
+        List<String> commandsFileLines = new ArrayList<>();
+
+        try{
+            commandsFileLines = testIoProblems(args);
+        } catch (IoProblemsError ioProblemsError){
+            System.err.println(IO_ERROR_MESSAGE);
+            System.exit(1);
+        }
+        return commandsFileLines;
     }
 
     /**
      * Gets a list of commandsfile lines and unify each bundle of rows into a section text.
-     * @param commandFileLines
-     * @return
+     * @param commandFileLines: A list of commandsfile lines.
+     * @returns A list of sections strings.
      */
-    private static List<String> unifyToSections(List<String> commandFileLines){
+    private static List<String> createSectionsText(List<String> commandFileLines){
 
         return null;
     }
@@ -83,7 +107,7 @@ public class DirectoryProcessor {
         return null;
     }
 
-    private static void printOutput(List<Section> sections){
+    private static void printOutput(List<Section> sections){ // TODO: (to delete): uses the Section class method getFiles in order to get the list of files to print.
 
     }
 
@@ -98,13 +122,13 @@ public class DirectoryProcessor {
      * @throws FileProcessingException
      */
     public static void main(String[] args) throws FileProcessingException{
-
         List<String> commandsFileLines = runBasicTests(args);
-        List<String> sectionsTextList = unifyToSections(commandsFileLines);
-        List<Section> sectionsList = createSections(sectionsTextList);
-
-        printOutput(sectionsList);
+//        List<String> sectionsTextList = createSectionsText(commandsFileLines);
+//        List<Section> sectionsList = createSections(sectionsTextList);
+//
+//        printOutput(sectionsList);
 
     }
 }
 
+// TODO: to delete if not needed:

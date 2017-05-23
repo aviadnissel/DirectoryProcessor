@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Noy on 21-May-17.
+ * @authors: Aviad Nissel, Noy Sternlicht
  */
 abstract public class Filter {
     private boolean not = false;

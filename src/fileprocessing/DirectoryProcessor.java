@@ -20,7 +20,7 @@ public class DirectoryProcessor {
     /*--- Errors And Warnings Messages --- */
     private static final String IO_ERROR_MESSAGE = "ERROR: An error occurred while accessing commandfile";
     private static final String INVALID_USAGE_ERROR_MESSAGE = "ERROR: Line arguments are invalid.";
-    private static final String WARNINGS_MESSAGE = "Warning in line";
+    private static final String WARNINGS_MESSAGE = "Warning in line ";
     private static final String BAD_FORMAT_ERROR_MESSAGE = "Error: The file format is not valid.";
     private static final String BAD_SUBSECTION_NAME_ERROR_MESSAGE = "Error: Subsections names are not valid.";
 

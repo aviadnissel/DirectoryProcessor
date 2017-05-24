@@ -48,9 +48,14 @@ public class DirectoryProcessor {
      * @throws InvalidUsageError
      */
     private static void testInvalidUsage(String[] args) throws InvalidUsageError {
+        if(args.length != VALID_COMMANDS_LINE_LENGTH){
+            throw new InvalidUsageError(INVALID_USAGE_ERROR_MESSAGE, LINE_NOT_NEEDED);
+        }
+
         File sourceDir = new File(args[SOURCE_DIRECTORY_INDEX]);
         File commandsFile = new File(args[COMMANDS_FILE_INDEX]);
-        if((args.length != VALID_COMMANDS_LINE_LENGTH) || !sourceDir.exists() || !commandsFile.exists()){
+
+        if(!sourceDir.exists() || !commandsFile.exists()){
             throw new InvalidUsageError(INVALID_USAGE_ERROR_MESSAGE, LINE_NOT_NEEDED);
         }
     }

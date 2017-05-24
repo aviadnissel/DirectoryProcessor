@@ -25,6 +25,7 @@ public class FilterFactory {
     private static final int DOMAIN_YES_NO_TEST = 0;
     private static final int DOMAIN_IS_LEGAL_DOUBLE_TEST = 1;
     private static final int DOMAIN_BETWEEN_TEST = 2;
+    private static final int WARNING_LINE = 1;
 
 
     /* --- Filters Names & String Constants --- */
@@ -98,13 +99,12 @@ public class FilterFactory {
 
     /**
      * Tests if the filter's name & arguments are legal.
-     * @param name: The filter's name.
-     * @param argument1: The filter's firs argument.
-     * @param argument2: The filter's second argument (null otherwise the tested filter is between).
-     * @param testKind: The kind of the test we wish to preform.
+     * @param argument1 : The filter's firs argument.
+     * @param argument2 : The filter's second argument (null otherwise the tested filter is between).
+     * @param testKind : The kind of the test we wish to preform.
      * @returns: True if the input is valid, false otherwise.
      */
-    private static boolean testInput(String name, String argument1, String argument2, int testKind){
+    private static boolean testInput(String argument1, String argument2, int testKind){
 
         switch (testKind){
             case DOMAIN_YES_NO_TEST:
@@ -145,29 +145,29 @@ public class FilterFactory {
         switch (name){
             case GREATER_THAN_FILTER:
                 argument1 = data.get(ARGUMENT1_INDEX);
-                if(testInput(name, argument1, null, DOMAIN_IS_LEGAL_DOUBLE_TEST)){
+                if(testInput(argument1, null, DOMAIN_IS_LEGAL_DOUBLE_TEST)){
                     return new GreaterThanFilter(argument1, not);
                 }
-                throw new BadParametersWarning(BAD_DOMAIN_DOUBLE_MSG, 1);
+                throw new BadParametersWarning(BAD_DOMAIN_DOUBLE_MSG, WARNING_LINE);
 
             case SMALLER_THAN_FILTER:
                 argument1 = data.get(ARGUMENT1_INDEX);
-                if(testInput(name,argument1, null, DOMAIN_IS_LEGAL_DOUBLE_TEST)){
+                if(testInput(argument1, null, DOMAIN_IS_LEGAL_DOUBLE_TEST)){
                     return new SmallerThanFilter(argument1, not);
                 }
-                throw new BadParametersWarning(BAD_DOMAIN_DOUBLE_MSG, 1);
+                throw new BadParametersWarning(BAD_DOMAIN_DOUBLE_MSG, WARNING_LINE);
 
             case BETWEEN_FILTER:
                 argument1 = data.get(ARGUMENT1_INDEX);
                 String argument2 = data.get(ARGUMENT2_INDEX);
 
-                if(testInput(name, argument1, argument2, DOMAIN_IS_LEGAL_DOUBLE_TEST)){
-                    if(testInput(name, argument1, argument2, DOMAIN_BETWEEN_TEST)){
+                if(testInput(argument1, argument2, DOMAIN_IS_LEGAL_DOUBLE_TEST)){
+                    if(testInput(argument1, argument2, DOMAIN_BETWEEN_TEST)){
                         return new BetweenFilter(argument1, argument2, not);
                     }
-                    throw new BadBetweenDomain(BAD_DOMAIN_BETWEEN_MSG, 1);
+                    throw new BadBetweenDomain(BAD_DOMAIN_BETWEEN_MSG, WARNING_LINE);
                 }
-                throw new BadParametersWarning(BAD_DOMAIN_DOUBLE_MSG, 1);
+                throw new BadParametersWarning(BAD_DOMAIN_DOUBLE_MSG, WARNING_LINE);
 
             case ALL_FILTER:
                 return new AllFilter(not);
@@ -178,10 +178,10 @@ public class FilterFactory {
 
             case EXECUTABLE_FILTER:
                 argument1 = data.get(ARGUMENT1_INDEX);
-                if(testInput(name, argument1, null, DOMAIN_YES_NO_TEST)){
+                if(testInput(argument1, null, DOMAIN_YES_NO_TEST)){
                     return new ExecutableFilter(argument1, not);
                 }
-                throw new BadParametersWarning(BAD_DOMAIN_YES_NO_MSG, 1);
+                throw new BadParametersWarning(BAD_DOMAIN_YES_NO_MSG, WARNING_LINE);
 
             case FILE_FILTER:
                 argument1 = data.get(ARGUMENT1_INDEX);
@@ -189,10 +189,10 @@ public class FilterFactory {
 
             case HIDDEN_FILTER:
                 argument1 = data.get(ARGUMENT1_INDEX);
-                if(testInput(name, argument1, null, DOMAIN_YES_NO_TEST)){
+                if(testInput(argument1, null, DOMAIN_YES_NO_TEST)){
                     return new HiddenFilter(argument1, not);
                 }
-                throw new BadParametersWarning(BAD_DOMAIN_YES_NO_MSG, 1);
+                throw new BadParametersWarning(BAD_DOMAIN_YES_NO_MSG, WARNING_LINE);
 
             case PREFIX_FILTER:
                 argument1 = data.get(ARGUMENT1_INDEX);
@@ -204,12 +204,12 @@ public class FilterFactory {
 
             case  WRITABLE_FILTER:
                 argument1 = data.get(ARGUMENT1_INDEX);
-                if(testInput(name, argument1, null, DOMAIN_YES_NO_TEST)){
+                if(testInput(argument1, null, DOMAIN_YES_NO_TEST)){
                     return new WritableFilter(argument1, not);
                 }
-                throw new BadParametersWarning(BAD_DOMAIN_YES_NO_MSG, 1);
+                throw new BadParametersWarning(BAD_DOMAIN_YES_NO_MSG, WARNING_LINE);
 
-            default: throw new BadNameWarning(BAD_FILTER_NAME_MSG, 1); // Todo: create filter CANNOT throw the exception and return all filter. main should call it again with the arguments needed for all filter.
+            default: throw new BadNameWarning(BAD_FILTER_NAME_MSG, WARNING_LINE);
         }
     }
 }

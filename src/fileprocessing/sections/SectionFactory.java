@@ -1,6 +1,8 @@
 package fileprocessing.sections;
 
 import fileprocessing.exceptions.FileProcessingException;
+import fileprocessing.exceptions.errors.BadFormatError;
+import fileprocessing.exceptions.errors.BadSubSectionNameError;
 import fileprocessing.exceptions.errors.FileProcessingError;
 import fileprocessing.exceptions.warnings.FileProcessingWarning;
 import fileprocessing.filters.Filter;
@@ -32,7 +34,7 @@ public class SectionFactory {
         String orderString = "";
 
         if (!lines.get(0).equals(FILTER)) {
-            throw new FileProcessingError("FILTER not found", curLine);
+            throw new BadSubSectionNameError("FILTER not found", curLine);
         }
 
         lines.remove(0);
@@ -46,7 +48,7 @@ public class SectionFactory {
         }
 
         if (!lines.get(0).equals(ORDER)) {
-            throw new FileProcessingError("ORDER not found", curLine);
+            throw new BadSubSectionNameError("ORDER not found", curLine);
         }
 
         lines.remove(0);

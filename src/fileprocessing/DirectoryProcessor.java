@@ -153,7 +153,7 @@ public class DirectoryProcessor {
             throws  FileProcessingWarning{
 
         int line = warning.getLine() +  (NUMBER_OF_LINES_IN_SECTION * sectionIndex);
-        System.err.println(WARNINGS_MESSAGE + line);
+        System.err.println(WARNINGS_MESSAGE + " " + line);
     }
 
     /**

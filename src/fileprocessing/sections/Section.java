@@ -21,7 +21,7 @@ public class Section {
     private Order order;
 
 
-    /* --- Constuctors --- */
+    /* --- Constructors --- */
 
     public Section(Filter filter, Order order){
         this.filter = filter;

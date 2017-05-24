@@ -25,7 +25,7 @@ public class FilterFactory {
     private static final int DOMAIN_YES_NO_TEST = 0;
     private static final int DOMAIN_IS_LEGAL_DOUBLE_TEST = 1;
     private static final int DOMAIN_BETWEEN_TEST = 2;
-    private static final int WARNING_LINE = 1;
+    private static final int WARNING_LINE = 0;
 
 
     /* --- Filters Names & String Constants --- */

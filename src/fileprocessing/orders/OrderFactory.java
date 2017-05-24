@@ -45,6 +45,6 @@ public class OrderFactory {
             case SIZE_ORDER:
                 return new SizeOrder(reverse);
         }
-        throw new BadNameWarning("Unknown order " + orderString, 1);
+        throw new BadNameWarning("Unknown order " + orderString, 0);
     }
 }

@@ -47,7 +47,7 @@ public class FilterFactory {
     private static final String BAD_DOMAIN_YES_NO_MSG = "Argument mast be ether 'YES' or 'NO'.";
     private static final String BAD_DOMAIN_DOUBLE_MSG = "The filter gets only non-negative doubles.";
     private static final String BAD_DOMAIN_BETWEEN_MSG = "The second argument mast be bigger than the first.";
-    private static final String BAD_FILTER_NAME_MSG = "The second argument mast be bigger than the first.";
+    private static final String BAD_FILTER_NAME_MSG = "A filter of this name do not exists.";
 
 
 

@@ -1,7 +1,3 @@
-/**
- * @Author: Aviad Nissel, Noy Sternlicht
- */
-
 package fileprocessing;
 import fileprocessing.exceptions.FileProcessingException;
 import fileprocessing.exceptions.errors.*;
@@ -29,7 +25,7 @@ public class DirectoryProcessor {
     private static final String BAD_SUBSECTION_NAME_ERROR_MESSAGE = "Error: Subsections names are not valid.";
 
     /* --- Other Constants --- */
-    private static final String LINE_SEPARATOR = "/n";
+    private static final String LINE_SEPARATOR = "\n";
     private static final String DEFAULT_SECTION_STRING = "FILTER/nall/nORDER/nabs/n";
     private static final int LINE_NOT_NEEDED = -1;
     private static final int SECTION_SIZE = 3;

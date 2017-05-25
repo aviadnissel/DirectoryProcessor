@@ -17,6 +17,9 @@ import java.util.List;
  */
 public class FilterFactory {
 
+    /* --- Constants --- */
+    private static final boolean DEFAULT_NOT = true;
+
     /* --- Int Constants --- */
 
     private static final int NAME_INDEX = 0;
@@ -213,7 +216,11 @@ public class FilterFactory {
         }
     }
 
+    /**
+     * Creates an "all" filter, which is default.
+     * @returns: An "all" filter.
+     */
     public static Filter createDefaultFilter() {
-        return null;
+        return new AllFilter(DEFAULT_NOT);
     }
 }

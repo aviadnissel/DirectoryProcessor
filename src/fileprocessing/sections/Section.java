@@ -31,6 +31,12 @@ public class Section {
         this.warnings = new ArrayList<>();
     }
 
+    public Section(Filter filter, Order order, List<FileProcessingWarning> warnings) {
+        this.filter = filter;
+        this.order = order;
+        this.warnings = warnings;
+    }
+
 
     /* --- Public Methods --- */
 

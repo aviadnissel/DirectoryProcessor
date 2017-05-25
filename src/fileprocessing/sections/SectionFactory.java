@@ -61,17 +61,20 @@ public class SectionFactory {
 
         Filter filter;
         Order order;
+        List<FileProcessingWarning> warnings = new ArrayList<>();
         try {
              filter = FilterFactory.createFilter(filterString);
         } catch (FileProcessingWarning e) {
             e.setLine(e.getLine() + filterLine);
-            throw e;
+            warnings.add(e);
+            filter = FilterFactory.createDefaultFilter();
         }
         try {
             order = OrderFactory.createOrder(orderString);
         } catch (FileProcessingWarning e) {
             e.setLine(e.getLine() + orderLine);
-            throw e;
+            warnings.add(e);
+            order = OrderFactory.createDefaultOrder();
         }
         return new Section(filter, order);
     }

@@ -15,12 +15,12 @@ import java.util.List;
  */
 public class Section {
 
-
     /* --- Data Members --- */
 
     private Filter filter;
     private Order order;
     private List<FileProcessingWarning> warnings;
+    private int index;
 
 
     /* --- Constructors --- */
@@ -29,12 +29,14 @@ public class Section {
         this.filter = filter;
         this.order = order;
         this.warnings = new ArrayList<>();
+        this.index = 0;
     }
 
     public Section(Filter filter, Order order, List<FileProcessingWarning> warnings) {
         this.filter = filter;
         this.order = order;
         this.warnings = warnings;
+        this.index = 0;
     }
 
 
@@ -64,5 +66,13 @@ public class Section {
 
     public void addWarning(FileProcessingWarning warning) {
         warnings.add(warning);
+    }
+
+    public int getIndex() {
+        return index;
+    }
+
+    public void setIndex(int index) {
+        this.index = index;
     }
 }

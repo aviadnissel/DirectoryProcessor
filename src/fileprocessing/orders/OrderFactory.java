@@ -37,7 +37,7 @@ public class OrderFactory {
         }
         switch (actualOrder) {
             case EMPTY_ORDER:
-                // Same as ABS_ORDER, so no break!
+                return createDefaultOrder();
             case ABS_ORDER:
                 return new AbsOrder(reverse);
             case TYPE_ORDER:
@@ -46,5 +46,9 @@ public class OrderFactory {
                 return new SizeOrder(reverse);
         }
         throw new BadNameWarning("Unknown order " + orderString, 0);
+    }
+
+    public static Order createDefaultOrder() {
+        return new AbsOrder(false);
     }
 }

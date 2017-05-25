@@ -212,4 +212,8 @@ public class FilterFactory {
             default: throw new BadNameWarning(BAD_FILTER_NAME_MSG, WARNING_LINE);
         }
     }
+
+    public static Filter createDefaultFilter() {
+        return null;
+    }
 }

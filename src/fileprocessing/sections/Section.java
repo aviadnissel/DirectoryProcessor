@@ -1,5 +1,6 @@
 package fileprocessing.sections;
 
+import fileprocessing.exceptions.warnings.FileProcessingWarning;
 import fileprocessing.filters.Filter;
 import fileprocessing.orders.Order;
 
@@ -19,6 +20,7 @@ public class Section {
 
     private Filter filter;
     private Order order;
+    private List<FileProcessingWarning> warnings;
 
 
     /* --- Constructors --- */
@@ -26,6 +28,7 @@ public class Section {
     public Section(Filter filter, Order order){
         this.filter = filter;
         this.order = order;
+        this.warnings = new ArrayList<>();
     }
 
 
@@ -47,5 +50,13 @@ public class Section {
         List<File> filteredFiles = filter.filterFiles(files);
         List<File> orderedFiles = order.order(filteredFiles);
         return orderedFiles;
+    }
+
+    public List<FileProcessingWarning> getWarnings() {
+        return warnings;
+    }
+
+    public void addWarning(FileProcessingWarning warning) {
+        warnings.add(warning);
     }
 }

@@ -1,0 +1,41 @@
+aviadnissel
+
+
+===Files Description===
+Bucket - a list of strings, used in OpenHashSet. Contains add, remove, exists and getAll methods.
+SimpleHashSet - an abstract class implementing SimpleSet with a few key methods, some abstract.
+OpenHashSet - an implementation of SimpleHashSet using an open hash.
+OpenHashSet - an implementation of SimpleHashSet using an closed hash.
+CollectionFacadeSet - a facade which makes a Collection of strings act as a SimpleSet.
+SimpleSetPerformanceAnalyzer - an analyzer of different type of hashsets.
+
+===Design===
+In addition to AvlTree I added 2 more classes. The first is an abstract BinaryTreeSearch. It contains common binary tree
+functionality and allows those who extend it to use it while implementing their own algorithmic improvements.
+The second classs is Node, which represents a node in a binary tree. In using it I allow for more concise code and
+avoiding unnecessary loop complications within AvlTree.
+
+===Implementation===
+The add method was done in a while loop which searches for the appropriate place to add the value in, while searching
+for duplicates on the way without adding to the complexity.
+The delete method finds the node that needs to be deleted, and then calls for a private delete method on that node.
+The private delete method differentiate between the (simple) case of deleting a leaf, and the other case which requires
+a recursive method calling.
+Both methods call for balance() which is the method that keeps the AvlTree property.
+
+===Answers===
+
+= Analyzing (6.1) =
+The series is 8 3 10 2 5 9 11 1 4 6 12 7
+
+= Complexity (6.2) =
+1) Constructing a tree with n elements means running n times the add method, which has O(log n) complexity,
+    so in total the complexity is O(n log n).
+2) Copying an existing tree with n elements means collecting all the elements from the old tree, which is done in O(n)
+    time, and then adding them the same way as the previous question, which is O(n log n), so in total the complexity
+    is O(n log n).
+
+= Difference from the UML =
+    -BinarySearchTree - changed its name from BinaryTree, and changed add and delete to be abstract since implementation
+                        is very different between different trees.
+    -Node - added calculateDepth to make the balance complexity lower.

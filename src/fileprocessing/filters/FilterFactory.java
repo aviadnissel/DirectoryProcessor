@@ -18,7 +18,7 @@ import java.util.List;
 public class FilterFactory {
 
     /* --- Constants --- */
-    private static final boolean DEFAULT_NOT = true;
+    private static final boolean DEFAULT_NOT = false;
 
     /* --- Int Constants --- */
 

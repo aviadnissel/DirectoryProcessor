@@ -76,12 +76,6 @@ public class SectionFactory {
             warnings.add(e);
             order = OrderFactory.createDefaultOrder();
         }
-        return new Section(filter, order);
-    }
-
-    public static void main(String[] args) throws Exception {
-        String text = "FILTER\nORDER\nabs";
-        Section section = createSection(text);
-        System.out.println("HEllo");
+        return new Section(filter, order, warnings);
     }
 }

@@ -26,9 +26,7 @@ public class DirectoryProcessor {
 
     /* --- Other Constants --- */
     private static final String LINE_SEPARATOR = "\n";
-    private static final String DEFAULT_SECTION_STRING = "FILTER\nall\nORDER\nabs\n";
     private static final int LINE_NOT_NEEDED = -1;
-    private static final int SECTION_SIZE = 3;
     private static final int NUMBER_OF_LINES_IN_SECTION = 4;
     private static final int COMMANDS_FILE_INDEX = 1;
     private static final int SOURCE_DIRECTORY_INDEX = 0;
@@ -86,9 +84,6 @@ public class DirectoryProcessor {
         return commandsFileLines;
         }
 
-
-    /* --- Main Methods --- */
-
     /**
      * Runs invalidUsage test and ioProblems test and handle the errors if there are.
      * @param args: Command line arguments.
@@ -113,6 +108,8 @@ public class DirectoryProcessor {
         }
         return commandsFileLines;
     }
+
+    /* --- Main Methods --- */
 
     private static List<String> createSectionStrings(List<String> commandFileLines) throws BadFormatError{
         List<String> sectionsStrings = new ArrayList<>();
@@ -178,7 +175,7 @@ public class DirectoryProcessor {
     }
 
     /**
-     * Creates a section object and handles the warnings and errors that might occur as result.
+     * Creates a list of sections objects and handles the warnings and errors that might occur as result.
      * @param sectionsStrings : A list of strings containing the data needed for creating sections objects.
      * @returns: A list of section objects.
      * @throws FileProcessingException
@@ -213,10 +210,10 @@ public class DirectoryProcessor {
 
     /**
      * Prints the names of the files that were filtered and ordered by a Section object.
-     * @param sectionsList : A section object.
+     * @param sectionsList : A list of sections objects.
      * @param sourceDir : The directory that contains the files we wish to filter and order.
      */
-    private static void printOutput(List<Section> sectionsList, File sourceDir){ //TODO: should get a sections list and print files & the relevant warnings.
+    private static void printOutput(List<Section> sectionsList, File sourceDir){
         List<File> outputFiles;
         List<FileProcessingWarning> sectionWarnings;
 
@@ -231,11 +228,6 @@ public class DirectoryProcessor {
                 System.out.println(file.getName());
             }
         }
-
-//        List<File> outputFiles = sectionsList.getFiles(sourceDir);
-//        for (File outPut: outputFiles) {
-//            System.out.println(outPut.getName());
-//        }
     }
 
     /* --- MAIN --- */
@@ -253,50 +245,8 @@ public class DirectoryProcessor {
         List<String> commandsFileLines = runBasicTests(args);
         List<String> sectionsStringsList = createSectionStrings(commandsFileLines);
         List<Section> sectionsList = createSectionsList(sectionsStringsList);
-        File sourceDir = new File(args[SOURCE_DIRECTORY_INDEX]);  // TODO: Warnings are now handled at SectionFactory. I don't need to throw them anymore, just update the lines.
+        File sourceDir = new File(args[SOURCE_DIRECTORY_INDEX]);
 
         printOutput(sectionsList, sourceDir);
-
-//        for (String sectionString: sectionsStringsList) {
-//             Creates a section object and handle errors and warnings:
-//            currentSection = createSectionsList(sectionString, sectionIndex);
-//
-//             Prints the ordered and filtered files:
-//            printOutput(currentSection, sourceDir);
-//            sectionIndex += 1;
-//        }
     }
 }
-
-
-
-//TODO: delete if not needed:
-
-//        List<String> sectionsStrings = new ArrayList<>();
-//        String section = EMPTY_SECTION_STRING;
-//        int counter = 0;
-//
-//        for (String commandFileLine : commandFileLines) {
-//             If the reviewed line is still inside the section part, the method concatenate it to "section":
-//            if (counter <= SECTION_SIZE) {
-//                section += (commandFileLine + LINE_SEPARATOR);
-//                counter +=1;
-//            }
-//
-//             Else it creates a new section string:
-//            else{
-//                sectionsStrings.add(section);
-//                counter = 1;
-//                section = (commandFileLine + LINE_SEPARATOR);
-//            }
-//        }
-//
-//        sectionsStrings.add(section); // Adds the last section.
-//
-//        return sectionsStrings;
-
-
-
-//catch (FileProcessingWarning warning){ // TODO: Warnings are now handled at SectionFactory. I don't need to throw them anymore, just update the lines.
-//        handleWarnings(warning, sectionIndex);
-//        }

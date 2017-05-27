@@ -91,21 +91,16 @@ public class DirectoryProcessor {
      */
     private static List<String> runBasicTests(String[] args) {
 
-        try {
-            testInvalidUsage(args);
-        } catch (InvalidUsageError invalidUsageError){
-            System.err.println(INVALID_USAGE_ERROR_MESSAGE);
-            System.exit(1);
-        }
-
         List<String> commandsFileLines = new ArrayList<>();
 
-        try{
+        try {
+            testInvalidUsage(args);
             commandsFileLines = testIoProblems(args);
-        } catch (IoProblemsError ioProblemsError){
-            System.err.println(IO_ERROR_MESSAGE);
+        } catch (FileProcessingError error){
+            System.err.println(error.getMessage());
             System.exit(1);
         }
+
         return commandsFileLines;
     }
 
@@ -116,8 +111,8 @@ public class DirectoryProcessor {
 
         try {
              sectionsStrings = sectionsStringsHelper(commandFileLines);
-        } catch (BadFormatError badFormatError){
-            System.err.println(BAD_FORMAT_ERROR_MESSAGE);
+        } catch (FileProcessingError error){
+            System.err.println(error.getMessage());
             System.exit(1);
         }
 

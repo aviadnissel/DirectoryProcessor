@@ -1,9 +1,15 @@
 package filesprocessing.exceptions.warnings;
 
 /**
- * Created by Noy on 22-May-17.
+ * A BadNameWarning exception.
+ *
+ * @author Aviad Nissel, Noy Sternlicht
  */
+
 public class BadNameWarning extends FileProcessingWarning {
+
+
+    /* --- Constructors --- */
 
     public BadNameWarning(String message, int line) {
         super(message, line);

@@ -1,15 +1,17 @@
-/**
- * Created by Noy Sternlicht on 22-May-17.
- */
-
 package filesprocessing.filters;
 import java.io.File;
 
 /**
  * This class creates a filter that checks if the file name contains a given string.
+ * @author Aviad Nissel, Noy Sternlicht
  */
 public class ContainsFilter extends Filter {
+
+
+    /* --- Data Members --- */
+
     private final String value;
+
 
     /* --- Constructors --- */
 
@@ -24,13 +26,9 @@ public class ContainsFilter extends Filter {
         this.value = value;
     }
 
-    /* --- Methods --- */
 
-    /**
-     * Tests if a file matches the filter.
-     * @param file: The file to be tested.
-     * @returns: True if the file matches the filter, false otherwise.
-     */
+    /* --- Filter Impl. --- */
+
     @Override
     public boolean isMatch(File file) {
         return file.getName().contains(value);

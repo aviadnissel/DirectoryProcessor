@@ -1,41 +1,73 @@
+noystl
 aviadnissel
 
+=============================
+=      File description     =
+=============================
+DirectoryProcessor is a program that can filter and order files in various ways. It gets two paths:
+One is a source directory in which the files to order are,
+and the second is a file that contains the filtering and ordering commends.
 
-===Files Description===
-Bucket - a list of strings, used in OpenHashSet. Contains add, remove, exists and getAll methods.
-SimpleHashSet - an abstract class implementing SimpleSet with a few key methods, some abstract.
-OpenHashSet - an implementation of SimpleHashSet using an open hash.
-OpenHashSet - an implementation of SimpleHashSet using an closed hash.
-CollectionFacadeSet - a facade which makes a Collection of strings act as a SimpleSet.
-SimpleSetPerformanceAnalyzer - an analyzer of different type of hashsets.
+=============================
+=          Design           =
+=============================
+We decided to use the Factory design pattern in order to create filter, order and section objects:
 
-===Design===
-In addition to AvlTree I added 2 more classes. The first is an abstract BinaryTreeSearch. It contains common binary tree
-functionality and allows those who extend it to use it while implementing their own algorithmic improvements.
-The second classs is Node, which represents a node in a binary tree. In using it I allow for more concise code and
-avoiding unnecessary loop complications within AvlTree.
+* We did so because there where many similar objects that had to be created in the same way –
+    So It saved code duplicates.
+* We also thought it is more logical to separate the creation of items from the rest of the code. 
+* This choice has extendability and continuity benefits:
+    If in the future another programmer will want to add more kinds of filters for example, it would be easy to do so.
 
-===Implementation===
-The add method was done in a while loop which searches for the appropriate place to add the value in, while searching
-for duplicates on the way without adding to the complexity.
-The delete method finds the node that needs to be deleted, and then calls for a private delete method on that node.
-The private delete method differentiate between the (simple) case of deleting a leaf, and the other case which requires
-a recursive method calling.
-Both methods call for balance() which is the method that keeps the AvlTree property.
+Our Section, Filter, Order and FileProcessingException objects are abstract classes':
 
-===Answers===
+* There was an "is a" relationship in all of the cases.
+* It enabled us to reuse code, since all the subclasses' of the superclasses' mentioned above share some common behavior. 
 
-= Analyzing (6.1) =
-The series is 8 3 10 2 5 9 11 1 4 6 12 7
+We created our own costume exceptions, and as result we could organize the different kinds of error types,
+and in general, we had more control over the error handling.
 
-= Complexity (6.2) =
-1) Constructing a tree with n elements means running n times the add method, which has O(log n) complexity,
-    so in total the complexity is O(n log n).
-2) Copying an existing tree with n elements means collecting all the elements from the old tree, which is done in O(n)
-    time, and then adding them the same way as the previous question, which is O(n log n), so in total the complexity
-    is O(n log n).
+The code is parted to many classes':
+* It enabled us to decompose many problems we had into smaller ones.
+* It helped a lot with team work.   
+* We think it is makes the code more self-explanatory and understandable.  
 
-= Difference from the UML =
-    -BinarySearchTree - changed its name from BinaryTree, and changed add and delete to be abstract since implementation
-                        is very different between different trees.
-    -Node - added calculateDepth to make the balance complexity lower.
+We added our own packages of the same reasons.
+
+=============================
+=  Implementation details   =
+=============================
+A big issue with implementing the design is managing the exceptions and the lines they were thrown in.
+We chose to save the exception's relative line number in the Exception object, and to change it as it is thrown
+up through the stack.
+Another issue was having the filename as second ordering in case for example to files have the same size.
+We achieved that by having a stable order condition, using the fact that File.listFiles returns the list ordered
+by filename in the first place.
+A main code-duplication avoidance was implementing most of the Filter and Order code in the abstract classes,
+leaving only a small abstract method to be implemented for the actual filter and order. We used java's Comparator
+object for the Order class for it.
+
+=============================
+=    Answers to questions   =
+=============================
+Explain all your design choices in detail 
+
+Please see Design.
+Describe the exceptions hierarchy you used in order to handle errors in the program.
+Explain the considerations that made you choose that specific design.
+
+We created our own costume exceptions, since we could separate the different kinds of problems
+that might occur and to handle them by type (Type I / Type II for example).
+
+Here is the hierarchy we used:
+* FileProcessingException is the superclass of all of the errors in the code. It is an abstract class.
+* Errors are divided to Type I and to Type II:
+    Type I errors extends FileProcessingWarnings
+    Type II errors extends FileProcessingError (which are also abstract)
+* Each type has multiple sub-types.
+
+How did you sort your matched files? Did you use a data structure for this purpose?
+If so, what data structure and why?
+
+We used a simple ArrayList for sorting the matched files, for no particular reason.
+The sorting used java's builtin List.toOrder method with the relevant Comparator.

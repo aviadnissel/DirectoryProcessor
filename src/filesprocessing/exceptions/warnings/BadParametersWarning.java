@@ -1,9 +1,15 @@
 package filesprocessing.exceptions.warnings;
 
 /**
- * Created by Noy on 22-May-17.
+ * A BadParametersWarning exception.
+ *
+ * @author Aviad Nissel, Noy Sternlicht
  */
 public class BadParametersWarning extends FileProcessingWarning {
+
+
+    /* --- Constructors --- */
+
     public BadParametersWarning(String message, int line) {
         super(message, line);
     }

@@ -50,14 +50,14 @@ public class Section {
     public List<File> getFiles(File sourceDir) {
         File[] filesAndDirectories = sourceDir.listFiles();
         List<File> files = new ArrayList<>();
+        //noinspection ConstantConditions
         for (File file: filesAndDirectories) {
             if (file.isFile()) {
                 files.add(file);
             }
         }
         List<File> filteredFiles = filter.filterFiles(files);
-        List<File> orderedFiles = order.order(filteredFiles);
-        return orderedFiles;
+        return order.order(filteredFiles);
     }
 
     public List<FileProcessingWarning> getWarnings() {

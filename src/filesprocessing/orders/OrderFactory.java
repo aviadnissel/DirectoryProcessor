@@ -28,7 +28,7 @@ public class OrderFactory {
      * @return The appropriate Order object.
      */
     public static Order createOrder(String orderString)  throws FileProcessingWarning {
-        String[] split = orderString.split("\\#");
+        String[] split = orderString.split("#");
         String actualOrder = split[0];
         boolean reverse = false;
         if (split.length > 1) {

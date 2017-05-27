@@ -3,16 +3,17 @@ package filesprocessing.filters;
 import java.io.File;
 
 /**
- * Created by Noy on 22-May-17.
- */
-
-/**
  * This class represents a filter which returns files that have execute permission, or files
  * that doesn't have execute permissions according to a given word (YES for executable, NO for not executable).
+ * @author Aviad Nissel, Noy Sternlicht
  */
 public class ExecutableFilter extends Filter {
 
+
+    /* --- Data Members --- */
+
     private final String yesOrNo;
+
 
     /* --- Constructors --- */
 
@@ -27,14 +28,10 @@ public class ExecutableFilter extends Filter {
         this.yesOrNo = yesOrNo;
     }
 
-    /* --- Methods --- */
+
+    /* --- Filter Impl. --- */
 
     @Override
-    /**
-     * Tests if a file matches the filter.
-     * @param file: The file to be tested.
-     * @return: True if the file passed the filter, false otherwise.
-     */
     public boolean isMatch(File file) {
         return file.canExecute() == yesOrNo.equals("YES");
     }

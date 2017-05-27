@@ -64,7 +64,7 @@ public class DirectoryProcessor {
      * This method verifies that there are no IO problems while accessing the commands file. If there aren't,
      * creates a list with the commands file lines.
      * @param args: Command line arguments.
-     * @returns: A list that contains the file lines.
+     * @return A list that contains the file lines.
      * @throws IoProblemsError
      */
     private static List<String> testIoProblems(String[] args)throws IoProblemsError{
@@ -87,7 +87,7 @@ public class DirectoryProcessor {
     /**
      * Runs invalidUsage test and ioProblems test and handle the errors if there are.
      * @param args: Command line arguments.
-     * @returns: If the commands file passed the tested, returns is. Throws the relevant error otherwise.
+     * @return If the commands file passed the tested, returns is. Throws the relevant error otherwise.
      */
     private static List<String> runBasicTests(String[] args) {
 
@@ -127,7 +127,7 @@ public class DirectoryProcessor {
     /**
      * Gets a list of commandsfile lines and unify each bundle of rows into a section text.
      * @param commandFileLines: A list of commandsfile lines.
-     * @returns A list of sections strings.
+     * @return A list of sections strings.
      */
     private static List<String> sectionsStringsHelper(List<String> commandFileLines) throws BadFormatError {
         List<String> sectionsStrings = new ArrayList<>();
@@ -145,7 +145,7 @@ public class DirectoryProcessor {
                 sectionsStrings.add(section.toString());
                 section = new StringBuilder(line + LINE_SEPARATOR); // The line is surly a proper FILTER header.
             } else {
-                section.append(line + LINE_SEPARATOR);
+                section.append(line).append(LINE_SEPARATOR);
             }
         }
 
@@ -166,7 +166,6 @@ public class DirectoryProcessor {
     /**
      * Prints a warning and the invalid line number (first line is indexed as 1).
      * @param warning : The warning object that was thrown.
-     * @throws FileProcessingWarning
      */
     private static void handleWarning(FileProcessingWarning warning, Section section){
 
@@ -177,7 +176,7 @@ public class DirectoryProcessor {
     /**
      * Creates a list of sections objects and handles the warnings and errors that might occur as result.
      * @param sectionsStrings : A list of strings containing the data needed for creating sections objects.
-     * @returns: A list of section objects.
+     * @return A list of section objects.
      * @throws FileProcessingException
      */
     private static List<Section> createSectionsList(List<String> sectionsStrings)

@@ -2,18 +2,22 @@ package filesprocessing.filters;
 import java.io.File;
 
 /**
- * Created by Noy Sternlicht on 21-May-17.
- */
-
-
-/**
- * This class represents a filter which returns files with size strictly bigger than a given
- * number (in K-bytes)
+ * This class represents a filter which returns files with size strictly bigger
+ * than a given number (in K-bytes)
+ * @author Aviad Nissel, Noy Sternlicht
  */
 public class GreaterThanFilter extends Filter {
 
+
+    /* --- Constants --- */
+
     private static final int KBYTES_TO_BYTES = 1024;
-    private int greaterThan;
+
+
+    /* --- Data Members --- */
+
+    private double greaterThan;
+
 
     /* --- Constructors --- */
 
@@ -24,19 +28,14 @@ public class GreaterThanFilter extends Filter {
      */
     public GreaterThanFilter(String greaterThan, Boolean not){
         super(not);
-        this.greaterThan = (Integer.parseInt(greaterThan)) * KBYTES_TO_BYTES;
+        this.greaterThan = (Double.parseDouble(greaterThan)) * KBYTES_TO_BYTES;
 
     }
 
-    /* --- Methods --- */
+
+    /* --- Filter Impl. --- */
 
     @Override
-
-    /**
-     * Returns true if the tested file's size is bigger than "greaterThan", false otherwise.
-     * @param file: The tested file object.
-     * @returns: True if the tested file's size is bigger than "greaterThan", false otherwise.
-     */
     public boolean isMatch(File file){
         return file.length() > greaterThan;
     }

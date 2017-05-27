@@ -1,23 +1,46 @@
 package filesprocessing.exceptions;
 
 /**
- * Created by Noy on 22-May-17.
+ * A basic FileProcessing exception.
+ *
+ * @author Aviad Nissel, Noy Sternlicht
  */
-public class FileProcessingException extends Exception{
-    public int getLine() {
-        return line;
-    }
+public class FileProcessingException extends Exception {
 
-    public void setLine(int line) {
-        this.line = line;
-    }
+
+    /* --- Data Members --- */
 
     private int line;
 
+
+    /* --- Constructors --- */
+
+    /**
+     * Constructor.
+     * @param message The message.
+     * @param line The line number the exception was raised in.
+     */
     public FileProcessingException(String message, int line){
         super(message);
         this.line = line;
     }
 
+    /* --- Getters / Setters --- */
 
+    /**
+     * Setter for line.
+     * @param line The line number.
+     */
+    public void setLine(int line) {
+        this.line = line;
+
+    }
+
+    /**
+     * Getter for line.
+     * @return line The line number.
+     */
+    public int getLine() {
+        return line;
+    }
 }

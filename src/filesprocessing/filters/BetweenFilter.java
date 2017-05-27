@@ -1,17 +1,22 @@
-/**
- * Created by Noy Sternlicht on 21-May-17.
- */
-
 package filesprocessing.filters;
 import java.io.File;
 
 /**
  * This class represents a filter which returns files with size between two given numbers (inclusive).
+ * @author Aviad Nissel, Noy Sternlicht
  */
 public class BetweenFilter extends Filter{
 
+
+    /* --- Constants --- */
+
     private static final int KBYTES_TO_BYTES = 1024;
+
+
+    /* --- Data Members --- */
+
     private int lowerBound, upperBound;
+
 
     /* --- Constructors --- */
 
@@ -31,15 +36,10 @@ public class BetweenFilter extends Filter{
         this.upperBound = Integer.parseInt(upperBound) * KBYTES_TO_BYTES;
     }
 
-    /* --- Methods --- */
+
+    /* --- Filter Impl. --- */
 
     @Override
-
-    /**
-     * Returns true if the file size is between lowerBound and upperBound.
-     * @param file: The file to be tested.
-     * @returns: True if the file size is between lowerBound and upperBound, false otherwise.
-     */
     public boolean isMatch(File file){
         return ((file.length() >= lowerBound) && (file.length() <= upperBound));
     }

@@ -1,9 +1,15 @@
 package filesprocessing.exceptions.warnings;
 
 /**
- * Created by Noy on 22-May-17.
+ * A BadBetweenDomain exception.
+ *
+ * @author Aviad Nissel, Noy Sternlicht
  */
 public class BadBetweenDomain extends FileProcessingWarning {
+
+
+    /* --- Constructors --- */
+
     public BadBetweenDomain(String message, int line) {
         super(message, line);
     }

@@ -1,7 +1,3 @@
-/**
- * Created by Noy Sternlicht on 21-May-17.
- */
-
 package filesprocessing.filters;
 import filesprocessing.exceptions.warnings.BadBetweenDomain;
 import filesprocessing.exceptions.warnings.BadNameWarning;
@@ -14,11 +10,15 @@ import java.util.List;
 
 /**
  * This class creates Filter objects according to the FILTER subsection in command file.
+ * @author Aviad Nissel, Noy Sternlicht
  */
 public class FilterFactory {
 
+
     /* --- Constants --- */
+
     private static final boolean DEFAULT_NOT = false;
+
 
     /* --- Int Constants --- */
 
@@ -59,7 +59,7 @@ public class FilterFactory {
     /**
      * Splits The FILTER subsection by the character "#".
      * @param filterString: The FILTER subsection.
-     * @return: A list contains the name, argument, and possibly the "NOT" suffix of the filter.
+     * @return A list contains the name, argument, and possibly the "NOT" suffix of the filter.
      */
     private static List<String> split(String filterString){
         String[] helper = filterString.split(SEPARATOR);
@@ -72,15 +72,15 @@ public class FilterFactory {
      * Tests if the input is double.
      * @param argument1: A given string.
      * @param argument2: Null unless the filter is between (Than it is a string too).
-     * @returns: True if the inputs are doubles, false otherwise.
+     * @return True if the inputs are doubles, false otherwise.
      */
     private static boolean testIfDouble(String argument1, String argument2){
-        try{
+        try {
             Double.parseDouble(argument1);
             if (argument2 != null){
                 Double.parseDouble(argument2);
             }
-        }catch(NumberFormatException numberException){
+        } catch(NumberFormatException numberException ) {
             return false;
         }
         return true;
@@ -90,10 +90,10 @@ public class FilterFactory {
      * Tests if the inputs are non negatives.
      * @param argument1: A given string.
      * @param argument2: Null unless the filter is between. Otherwise a string too.
-     * @returns: True if the inputs are non negatives, false otherwise.
+     * @return True if the inputs are non negatives, false otherwise.
      */
     private static boolean isNonNegative(String argument1, String argument2){
-        if (argument2 != null){
+        if (argument2 != null) {
             return Double.parseDouble(argument1) >= 0 && Double.parseDouble(argument2) >= 0;
         }
         return Double.parseDouble(argument1) >= 0;
@@ -105,7 +105,7 @@ public class FilterFactory {
      * @param argument1 : The filter's firs argument.
      * @param argument2 : The filter's second argument (null otherwise the tested filter is between).
      * @param testKind : The kind of the test we wish to preform.
-     * @returns: True if the input is valid, false otherwise.
+     * @return True if the input is valid, false otherwise.
      */
     private static boolean testInput(String argument1, String argument2, int testKind){
 
@@ -123,7 +123,7 @@ public class FilterFactory {
     /**
      * Finds out if a filter has "NOT" suffix.
      * @param data: A list contains the name, argument, and possibly the "NOT" suffix of the filter.
-     * @return: True if the not flag should be turned on, false otherwise.
+     * @return True if the not flag should be turned on, false otherwise.
      */
     private static boolean ifNot(List<String> data){
         return data.get(data.size() - 1).equals("NOT");
@@ -135,8 +135,8 @@ public class FilterFactory {
     /**
      * Creates a Filter object according the FILTER subsection in command file.
      * @param filterString: The FILTER subsection.
-     * @return: The desired filtered object.
-     * @throws:  FileProcessingWarning
+     * @return The desired filtered object.
+     * @throws  FileProcessingWarning
      */
     public static Filter createFilter(String filterString) throws FileProcessingWarning{
 
@@ -148,14 +148,14 @@ public class FilterFactory {
         switch (name){
             case GREATER_THAN_FILTER:
                 argument1 = data.get(ARGUMENT1_INDEX);
-                if(testInput(argument1, null, DOMAIN_IS_LEGAL_DOUBLE_TEST)){
+                if(testInput(argument1, null, DOMAIN_IS_LEGAL_DOUBLE_TEST)) {
                     return new GreaterThanFilter(argument1, not);
                 }
                 throw new BadParametersWarning(BAD_DOMAIN_DOUBLE_MSG, WARNING_LINE);
 
             case SMALLER_THAN_FILTER:
                 argument1 = data.get(ARGUMENT1_INDEX);
-                if(testInput(argument1, null, DOMAIN_IS_LEGAL_DOUBLE_TEST)){
+                if(testInput(argument1, null, DOMAIN_IS_LEGAL_DOUBLE_TEST)) {
                     return new SmallerThanFilter(argument1, not);
                 }
                 throw new BadParametersWarning(BAD_DOMAIN_DOUBLE_MSG, WARNING_LINE);
@@ -164,7 +164,7 @@ public class FilterFactory {
                 argument1 = data.get(ARGUMENT1_INDEX);
                 String argument2 = data.get(ARGUMENT2_INDEX);
 
-                if(testInput(argument1, argument2, DOMAIN_IS_LEGAL_DOUBLE_TEST)){
+                if(testInput(argument1, argument2, DOMAIN_IS_LEGAL_DOUBLE_TEST)) {
                     if(testInput(argument1, argument2, DOMAIN_BETWEEN_TEST)){
                         return new BetweenFilter(argument1, argument2, not);
                     }
@@ -181,7 +181,7 @@ public class FilterFactory {
 
             case EXECUTABLE_FILTER:
                 argument1 = data.get(ARGUMENT1_INDEX);
-                if(testInput(argument1, null, DOMAIN_YES_NO_TEST)){
+                if(testInput(argument1, null, DOMAIN_YES_NO_TEST)) {
                     return new ExecutableFilter(argument1, not);
                 }
                 throw new BadParametersWarning(BAD_DOMAIN_YES_NO_MSG, WARNING_LINE);
@@ -192,7 +192,7 @@ public class FilterFactory {
 
             case HIDDEN_FILTER:
                 argument1 = data.get(ARGUMENT1_INDEX);
-                if(testInput(argument1, null, DOMAIN_YES_NO_TEST)){
+                if(testInput(argument1, null, DOMAIN_YES_NO_TEST)) {
                     return new HiddenFilter(argument1, not);
                 }
                 throw new BadParametersWarning(BAD_DOMAIN_YES_NO_MSG, WARNING_LINE);
@@ -207,7 +207,7 @@ public class FilterFactory {
 
             case  WRITABLE_FILTER:
                 argument1 = data.get(ARGUMENT1_INDEX);
-                if(testInput(argument1, null, DOMAIN_YES_NO_TEST)){
+                if(testInput(argument1, null, DOMAIN_YES_NO_TEST)) {
                     return new WritableFilter(argument1, not);
                 }
                 throw new BadParametersWarning(BAD_DOMAIN_YES_NO_MSG, WARNING_LINE);
@@ -218,7 +218,7 @@ public class FilterFactory {
 
     /**
      * Creates an "all" filter, which is default.
-     * @returns: An "all" filter.
+     * @return An "all" filter.
      */
     public static Filter createDefaultFilter() {
         return new AllFilter(DEFAULT_NOT);

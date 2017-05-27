@@ -3,10 +3,14 @@ package filesprocessing.exceptions.errors;
 import filesprocessing.exceptions.FileProcessingException;
 
 /**
- * Created by Noy on 22-May-17.
+ * A general FileProcessing error exception.
+ *
+ * @author Aviad Nissel, Noy Sternlicht
  */
 public class FileProcessingError extends FileProcessingException {
 
+
+    /* --- Constructors --- */
 
     public FileProcessingError(String message, int line) {
         super(message, line);

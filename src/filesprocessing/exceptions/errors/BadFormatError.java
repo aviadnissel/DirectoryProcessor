@@ -1,9 +1,15 @@
 package filesprocessing.exceptions.errors;
 
 /**
- * Created by Noy on 22-May-17.
+ * A BadFormatError exception.
+ *
+ * @author Aviad Nissel, Noy Sternlicht
  */
 public class BadFormatError extends FileProcessingError {
+
+
+    /* --- Constructors --- */
+
     public BadFormatError(String message, int line) {
         super(message, line);
     }

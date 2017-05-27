@@ -3,13 +3,11 @@ package filesprocessing.filters;
 import java.io.File;
 
 /**
- * Created by Noy on 21-May-17.
- */
-
-/**
  * This class represents the "all" filter - The filter which returns all the files in the directory.
+ * @author Aviad Nissel, Noy Sternlicht
  */
 public class AllFilter extends Filter {
+
 
      /* --- Constructors --- */
 
@@ -21,15 +19,10 @@ public class AllFilter extends Filter {
         super(not);
     }
 
-     /* --- Methods --- */
+
+     /* --- Filter Impl. --- */
 
      @Override
-
-     /**
-     * Returns true for each File object.
-     * @param file: The file object to be tested.
-     * @return true.
-     */
     public boolean isMatch(File file){
         return true;
     }

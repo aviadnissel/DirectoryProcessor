@@ -1,16 +1,17 @@
-/**
- * Created by Noy Sternlicht on 22-May-17.
- */
-
 package filesprocessing.filters;
 import java.io.File;
 
 /**
  * This class represents a filter that matches files with names that starts with a given value.
+ * @author Aviad Nissel, Noy Sternlicht
  */
 public class PrefixFilter extends Filter {
 
+
+    /* --- Data Members --- */
+
     private final String prefix;
+
 
     /* --- Constructors --- */
 
@@ -25,13 +26,9 @@ public class PrefixFilter extends Filter {
         this.prefix = prefix;
     }
 
-    /* --- Methods --- */
 
-    /**
-     * Tests if a file matches the filter.
-     * @param file: The file to be tested.
-     * @returns: True if the file matches the filter, false otherwise.
-     */
+    /* --- Filter Impl. --- */
+
     @Override
     public boolean isMatch(File file) {
         return file.getName().startsWith(prefix);

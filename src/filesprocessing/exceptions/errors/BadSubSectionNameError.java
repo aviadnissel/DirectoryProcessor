@@ -1,9 +1,15 @@
 package filesprocessing.exceptions.errors;
 
 /**
- * Created by Noy on 22-May-17.
+ * A BadSubSectionNameError exception.
+ *
+ * @author Aviad Nissel, Noy Sternlicht
  */
 public class BadSubSectionNameError extends FileProcessingError {
+
+
+    /* --- Constructors --- */
+
     public BadSubSectionNameError(String message, int line) {
         super(message, line);
     }

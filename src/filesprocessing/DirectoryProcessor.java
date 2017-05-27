@@ -89,7 +89,7 @@ public class DirectoryProcessor {
      * @param args: Command line arguments.
      * @returns: If the commands file passed the tested, returns is. Throws the relevant error otherwise.
      */
-    private static List<String> runBasicTests(String[] args) throws FileProcessingError{
+    private static List<String> runBasicTests(String[] args) {
 
         try {
             testInvalidUsage(args);
@@ -111,7 +111,7 @@ public class DirectoryProcessor {
 
     /* --- Main Methods --- */
 
-    private static List<String> createSectionStrings(List<String> commandFileLines) throws BadFormatError{
+    private static List<String> createSectionStrings(List<String> commandFileLines) {
         List<String> sectionsStrings = new ArrayList<>();
 
         try {
@@ -129,9 +129,9 @@ public class DirectoryProcessor {
      * @param commandFileLines: A list of commandsfile lines.
      * @returns A list of sections strings.
      */
-    private static List<String> sectionsStringsHelper(List<String> commandFileLines) throws BadFormatError{ // TODO: I have changed the signature after UML submission.
+    private static List<String> sectionsStringsHelper(List<String> commandFileLines) throws BadFormatError {
         List<String> sectionsStrings = new ArrayList<>();
-        String section = EMPTY_SECTION_STRING;
+        StringBuilder section = new StringBuilder(EMPTY_SECTION_STRING);
 
         // If the first line in the file is not "FILTER" an error should be thrown:
         if(!commandFileLines.get(0).equals(FILTER_SUBSECTION_TITLE)){
@@ -141,11 +141,11 @@ public class DirectoryProcessor {
         for (String line: commandFileLines) {
 
             // The method concatenated all the relevant lines, and it creates a new section string:
-            if(section.contains(ORDER_SUBSECTION_TITLE) && line.equals(FILTER_SUBSECTION_TITLE)){
-                sectionsStrings.add(section);
-                section = line + LINE_SEPARATOR; // The line is surly a proper FILTER header.
-            }else{
-                section += line + LINE_SEPARATOR;
+            if(section.toString().contains(ORDER_SUBSECTION_TITLE) && line.equals(FILTER_SUBSECTION_TITLE)){
+                sectionsStrings.add(section.toString());
+                section = new StringBuilder(line + LINE_SEPARATOR); // The line is surly a proper FILTER header.
+            } else {
+                section.append(line + LINE_SEPARATOR);
             }
         }
 
@@ -154,13 +154,13 @@ public class DirectoryProcessor {
          case the method recognize it as the last (and incomplete) section in the file and WON'T add it to
           "sectionsStrings". If this scenario happens, a BedFormatError should be thrown:
          */
-        if (!section.contains(ORDER_SUBSECTION_TITLE)){
+        if (!section.toString().contains(ORDER_SUBSECTION_TITLE)) {
             throw new BadFormatError(BAD_FORMAT_ERROR_MESSAGE, LINE_NOT_NEEDED);
         }
 
         // Adds the last section:
-        sectionsStrings.add(section);
-    return sectionsStrings;
+        sectionsStrings.add(section.toString());
+        return sectionsStrings;
     }
 
     /**
@@ -171,7 +171,7 @@ public class DirectoryProcessor {
     private static void handleWarning(FileProcessingWarning warning, Section section){
 
         int line = warning.getLine() +  (NUMBER_OF_LINES_IN_SECTION * section.getIndex());
-        System.err.println(WARNINGS_MESSAGE + " " + line);
+        System.err.println(WARNINGS_MESSAGE + line);
     }
 
     /**
@@ -198,6 +198,7 @@ public class DirectoryProcessor {
             }
 
         } catch (BadFormatError badFormatError){
+            // TODO Merge
             System.err.println(BAD_FORMAT_ERROR_MESSAGE);
             System.exit(1);
 

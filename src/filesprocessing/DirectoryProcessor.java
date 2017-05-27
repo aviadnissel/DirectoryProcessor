@@ -197,13 +197,8 @@ public class DirectoryProcessor {
                 counter += 1;
             }
 
-        } catch (BadFormatError badFormatError){
-            // TODO Merge
-            System.err.println(BAD_FORMAT_ERROR_MESSAGE);
-            System.exit(1);
-
-        } catch (BadSubSectionNameError badSubSectionNameError){
-            System.err.println(BAD_SUBSECTION_NAME_ERROR_MESSAGE);
+        } catch (FileProcessingError error){
+            System.err.println(error.getMessage());
             System.exit(1);
         }
         return sectionsList;

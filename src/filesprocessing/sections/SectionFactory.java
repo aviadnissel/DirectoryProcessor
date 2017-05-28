@@ -32,7 +32,7 @@ public class SectionFactory {
         String orderString = "";
 
         if (!lines.get(0).equals(FILTER)) {
-            throw new BadSubSectionNameError("FILTER not found", curLine);
+            throw new BadSubSectionNameError("ERROR: FILTER not found", curLine);
         }
 
         lines.remove(0);
@@ -46,7 +46,7 @@ public class SectionFactory {
         }
 
         if (!lines.get(0).equals(ORDER)) {
-            throw new BadSubSectionNameError("ORDER not found", curLine);
+            throw new BadSubSectionNameError("ERROR: ORDER not found", curLine);
         }
 
         lines.remove(0);

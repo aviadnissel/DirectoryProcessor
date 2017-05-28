@@ -21,8 +21,7 @@ public class DirectoryProcessor {
     private static final String IO_ERROR_MESSAGE = "ERROR: An error occurred while accessing commandfile";
     private static final String INVALID_USAGE_ERROR_MESSAGE = "ERROR: Line arguments are invalid.";
     private static final String WARNINGS_MESSAGE = "Warning in line ";
-    private static final String BAD_FORMAT_ERROR_MESSAGE = "Error: The file format is not valid.";
-    private static final String BAD_SUBSECTION_NAME_ERROR_MESSAGE = "Error: Subsections names are not valid.";
+    private static final String BAD_FORMAT_ERROR_MESSAGE = "ERROR: The file format is not valid.";
 
     /* --- Other Constants --- */
     private static final String LINE_SEPARATOR = "\n";
@@ -98,7 +97,7 @@ public class DirectoryProcessor {
             commandsFileLines = testIoProblems(args);
         } catch (FileProcessingError error){
             System.err.println(error.getMessage());
-            System.exit(1);
+            return null;
         }
 
         return commandsFileLines;
@@ -113,7 +112,7 @@ public class DirectoryProcessor {
              sectionsStrings = sectionsStringsHelper(commandFileLines);
         } catch (FileProcessingError error){
             System.err.println(error.getMessage());
-            System.exit(1);
+            return null;
         }
 
         return sectionsStrings;
@@ -193,7 +192,7 @@ public class DirectoryProcessor {
 
         } catch (FileProcessingError error){
             System.err.println(error.getMessage());
-            System.exit(1);
+            return null;
         }
         return sectionsList;
     }
@@ -233,8 +232,17 @@ public class DirectoryProcessor {
     public static void main(String[] args) throws FileProcessingException{
 
         List<String> commandsFileLines = runBasicTests(args);
+        if (commandsFileLines == null) {
+            return;
+        }
         List<String> sectionsStringsList = createSectionStrings(commandsFileLines);
+        if (sectionsStringsList == null) {
+            return;
+        }
         List<Section> sectionsList = createSectionsList(sectionsStringsList);
+        if (sectionsList == null) {
+            return;
+        }
         File sourceDir = new File(args[SOURCE_DIRECTORY_INDEX]);
 
         printOutput(sectionsList, sourceDir);

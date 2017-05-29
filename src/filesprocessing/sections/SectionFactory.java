@@ -1,6 +1,7 @@
 package filesprocessing.sections;
 
 import filesprocessing.exceptions.FileProcessingException;
+import filesprocessing.exceptions.errors.BadFormatError;
 import filesprocessing.exceptions.errors.BadSubSectionNameError;
 import filesprocessing.exceptions.warnings.FileProcessingWarning;
 import filesprocessing.filters.Filter;
@@ -55,6 +56,12 @@ public class SectionFactory {
 
         if (lines.size() != 0) {
             orderString = lines.get(0);
+            lines.remove(0);
+            curLine += 1;
+        }
+
+        if (lines.size() != 0) {
+            throw new BadFormatError("ERROR: Section contains more than FILTER and ORDER", curLine);
         }
 
         Filter filter;

@@ -26,7 +26,6 @@ public class DirectoryProcessor {
     /* --- Other Constants --- */
     private static final String LINE_SEPARATOR = "\n";
     private static final int LINE_NOT_NEEDED = -1;
-    private static final int NUMBER_OF_LINES_IN_SECTION = 4;
     private static final int COMMANDS_FILE_INDEX = 1;
     private static final int SOURCE_DIRECTORY_INDEX = 0;
     private static final int VALID_COMMANDS_LINE_LENGTH = 2;
@@ -160,10 +159,16 @@ public class DirectoryProcessor {
     /**
      * Prints a warning and the invalid line number (first line is indexed as 1).
      * @param warning : The warning object that was thrown.
+     * @param sectionsList
+     * @param sectionIndex
      */
-    private static void handleWarning(FileProcessingWarning warning, Section section){
+    private static void handleWarning(FileProcessingWarning warning, List<Section> sectionsList, int sectionIndex){
+        int line = warning.getLine();
+        for (int i = 0; i < sectionIndex ; i++) {
+            line += sectionsList.get(i).getNumOfLines();
+        } {
 
-        int line = warning.getLine() +  (NUMBER_OF_LINES_IN_SECTION * section.getIndex());
+        }
         System.err.println(WARNINGS_MESSAGE + line);
     }
 
@@ -211,7 +216,7 @@ public class DirectoryProcessor {
             sectionWarnings = section.getWarnings();
 
             for (FileProcessingWarning warning: sectionWarnings) {
-                handleWarning(warning, section);
+                handleWarning(warning, sectionsList, section.getIndex());
             }
             for (File file: outputFiles) {
                 System.out.println(file.getName());

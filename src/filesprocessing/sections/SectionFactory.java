@@ -81,6 +81,6 @@ public class SectionFactory {
             warnings.add(e);
             order = OrderFactory.createDefaultOrder();
         }
-        return new Section(filter, order, warnings);
+        return new Section(filter, order, warnings, curLine);
     }
 }

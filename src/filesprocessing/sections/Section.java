@@ -21,22 +21,17 @@ public class Section {
     private Order order;
     private List<FileProcessingWarning> warnings;
     private int index;
+    private int numOfLines;
 
 
     /* --- Constructors --- */
 
-    public Section(Filter filter, Order order){
-        this.filter = filter;
-        this.order = order;
-        this.warnings = new ArrayList<>();
-        this.index = 0;
-    }
-
-    public Section(Filter filter, Order order, List<FileProcessingWarning> warnings) {
+    public Section(Filter filter, Order order, List<FileProcessingWarning> warnings, int numOfLines) {
         this.filter = filter;
         this.order = order;
         this.warnings = warnings;
         this.index = 0;
+        this.numOfLines = numOfLines;
     }
 
 
@@ -74,5 +69,9 @@ public class Section {
 
     public void setIndex(int index) {
         this.index = index;
+    }
+
+    public int getNumOfLines() {
+        return numOfLines;
     }
 }

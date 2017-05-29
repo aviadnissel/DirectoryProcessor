@@ -115,7 +115,7 @@ public class FilterFactory {
             case DOMAIN_IS_LEGAL_DOUBLE_TEST:
                 return testIfDouble(argument1, argument2) && isNonNegative(argument1, argument2); // TODO: test precedence
             case DOMAIN_BETWEEN_TEST:
-                return Double.parseDouble(argument1) <= Integer.parseInt(argument2);
+                return Double.parseDouble(argument1) <= Double.parseDouble(argument2);
         }
         return true;
     }

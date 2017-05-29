@@ -15,7 +15,7 @@ public class BetweenFilter extends Filter{
 
     /* --- Data Members --- */
 
-    private int lowerBound, upperBound;
+    private double lowerBound, upperBound;
 
 
     /* --- Constructors --- */
@@ -32,8 +32,8 @@ public class BetweenFilter extends Filter{
      */
     public BetweenFilter(String lowerBound, String upperBound, boolean not){
         super(not);
-        this.lowerBound = Integer.parseInt(lowerBound) * KBYTES_TO_BYTES;
-        this.upperBound = Integer.parseInt(upperBound) * KBYTES_TO_BYTES;
+        this.lowerBound = Double.parseDouble(lowerBound) * KBYTES_TO_BYTES;
+        this.upperBound = Double.parseDouble(upperBound) * KBYTES_TO_BYTES;
     }
 
 

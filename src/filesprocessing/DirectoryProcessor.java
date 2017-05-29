@@ -89,7 +89,7 @@ public class DirectoryProcessor {
      */
     private static List<String> runBasicTests(String[] args) {
 
-        List<String> commandsFileLines = new ArrayList<>();
+        List<String> commandsFileLines;
 
         try {
             testInvalidUsage(args);
@@ -105,7 +105,7 @@ public class DirectoryProcessor {
     /* --- Main Methods --- */
 
     private static List<String> createSectionStrings(List<String> commandFileLines) {
-        List<String> sectionsStrings = new ArrayList<>();
+        List<String> sectionsStrings;
 
         try {
              sectionsStrings = sectionsStringsHelper(commandFileLines);
@@ -178,7 +178,7 @@ public class DirectoryProcessor {
      * @return A list of section objects.
      * @throws FileProcessingException
      */
-    private static List<Section> createSectionsList(List<String> sectionsStrings)
+    private static List<Section> createSectionsList(List<String> sectionsStrings) // TODO: problem.
             throws FileProcessingException{
 
         List<Section> sectionsList = new ArrayList<>();
@@ -236,18 +236,59 @@ public class DirectoryProcessor {
      */
     public static void main(String[] args) throws FileProcessingException{
 
-        List<String> commandsFileLines = runBasicTests(args);
-        if (commandsFileLines == null) {
+        List<String> commandsFileLines;
+
+        try {
+            testInvalidUsage(args);
+            commandsFileLines = testIoProblems(args);
+        } catch (FileProcessingError error){
+            System.err.println(error.getMessage());
             return;
         }
-        List<String> sectionsStringsList = createSectionStrings(commandsFileLines);
-        if (sectionsStringsList == null) {
+
+
+        List<String> sectionsStrings;
+
+        try {
+            sectionsStrings = sectionsStringsHelper(commandsFileLines);
+        } catch (FileProcessingError error){
+            System.err.println(error.getMessage());
             return;
         }
-        List<Section> sectionsList = createSectionsList(sectionsStringsList);
-        if (sectionsList == null) {
+
+        List<Section> sectionsList = new ArrayList<>();
+
+        // Tries to create valid sections objects & handles warnings and errors if failed:
+        try{
+            Section currentSection;
+            int counter = 0;
+
+            for (String sectionString: sectionsStrings) {
+                currentSection = SectionFactory.createSection(sectionString);
+                currentSection.setIndex(counter);
+                sectionsList.add(currentSection);
+                counter += 1;
+            }
+
+        } catch (FileProcessingError error){
+            System.err.println(error.getMessage());
             return;
         }
+
+
+//        List<String> commandsFileLines = runBasicTests(args);
+
+//        if (commandsFileLines == null) {
+//            return;
+//        }
+//        List<String> sectionsStringsList = createSectionStrings(commandsFileLines);
+//        if (sectionsStringsList == null) {
+//            return;
+//        }
+//        List<Section> sectionsList = createSectionsList(sectionsStringsList);
+//        if (sectionsList == null) {
+//            return;
+//        }
         File sourceDir = new File(args[SOURCE_DIRECTORY_INDEX]);
 
         printOutput(sectionsList, sourceDir);

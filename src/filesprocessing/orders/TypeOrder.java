@@ -22,12 +22,13 @@ public class TypeOrder extends Order {
 
     @Override
     protected Comparator<File> getComparator() {
-        return Comparator.comparing(f -> {
+        Comparator<File> comparator = Comparator.comparing(f -> {
             String[] split = f.getName().split("\\.");
             if (split.length == 1) {
                 return "";
             }
             return split[split.length - 1];
         } );
+        return comparator.thenComparing(File::getAbsolutePath);
     }
 }

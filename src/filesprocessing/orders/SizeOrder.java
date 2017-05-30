@@ -22,6 +22,6 @@ public class SizeOrder extends Order {
 
     @Override
     protected Comparator<File> getComparator() {
-        return Comparator.comparing(File::length);
+        return Comparator.comparing(File::length).thenComparing(File::getAbsolutePath);
     }
 }

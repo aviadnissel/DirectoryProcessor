@@ -33,11 +33,6 @@ public class DirectoryProcessor {
     private static final String FILTER_SUBSECTION_TITLE = "FILTER";
     private static final String ORDER_SUBSECTION_TITLE = "ORDER";
 
-
-
-
-    /*--- Private Static Methods ---*/
-
     /* --- Errors Testers --- */
 
     /**
@@ -70,52 +65,20 @@ public class DirectoryProcessor {
         List<String> commandsFileLines = new ArrayList<>();
 
         // Tries to read the commands file:
-        try(BufferedReader bufferedReader = new BufferedReader( new FileReader(commandsFile))){
-            String line;
-            while ((line = bufferedReader.readLine()) != null){
-                commandsFileLines.add(line);
-                }
-            }
-            catch(IOException exception){
-            throw new IoProblemsError(IO_ERROR_MESSAGE, LINE_NOT_NEEDED);
-            }
-        return commandsFileLines;
-        }
-
-    /**
-     * Runs invalidUsage test and ioProblems test and handle the errors if there are.
-     * @param args: Command line arguments.
-     * @return If the commands file passed the tested, returns is. Throws the relevant error otherwise.
-     */
-    private static List<String> runBasicTests(String[] args) {
-
-        List<String> commandsFileLines;
-
         try {
-            testInvalidUsage(args);
-            commandsFileLines = testIoProblems(args);
-        } catch (FileProcessingError error){
-            System.err.println(error.getMessage());
-            return null;
+            BufferedReader bufferedReader = new BufferedReader(new FileReader(commandsFile));
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                commandsFileLines.add(line);
+            }
+        } catch(IOException exception) {
+            throw new IoProblemsError(IO_ERROR_MESSAGE, LINE_NOT_NEEDED);
         }
-
         return commandsFileLines;
     }
+
 
     /* --- Main Methods --- */
-
-    private static List<String> createSectionStrings(List<String> commandFileLines) {
-        List<String> sectionsStrings;
-
-        try {
-             sectionsStrings = sectionsStringsHelper(commandFileLines);
-        } catch (FileProcessingError error){
-            System.err.println(error.getMessage());
-            return null;
-        }
-
-        return sectionsStrings;
-    }
 
     /**
      * Gets a list of commandsfile lines and unify each bundle of rows into a section text.
@@ -158,17 +121,11 @@ public class DirectoryProcessor {
 
     /**
      * Prints a warning and the invalid line number (first line is indexed as 1).
-     * @param warning : The warning object that was thrown.
-     * @param sectionsList
-     * @param sectionIndex
+     * @param warning The warning object that was thrown.
+     * @param sectionLine The start line of the section.
      */
-    private static void handleWarning(FileProcessingWarning warning, List<Section> sectionsList, int sectionIndex){
-        int line = warning.getLine();
-        for (int i = 0; i < sectionIndex ; i++) {
-            line += sectionsList.get(i).getNumOfLines();
-        } {
-
-        }
+    private static void handleWarning(FileProcessingWarning warning, int sectionLine) {
+        int line = sectionLine + warning.getLine();
         System.err.println(WARNINGS_MESSAGE + line);
     }
 
@@ -178,27 +135,20 @@ public class DirectoryProcessor {
      * @return A list of section objects.
      * @throws FileProcessingException
      */
-    private static List<Section> createSectionsList(List<String> sectionsStrings) // TODO: problem.
-            throws FileProcessingException{
+    private static List<Section> createSectionsList(List<String> sectionsStrings) throws FileProcessingException {
 
         List<Section> sectionsList = new ArrayList<>();
 
-        // Tries to create valid sections objects & handles warnings and errors if failed:
-        try{
-            Section currentSection;
-            int counter = 0;
+        // Tries to create valid sections objects & handles warnings and errors if failed:try{
+        Section currentSection;
+        int counter = 0;
 
-            for (String sectionString: sectionsStrings) {
-                currentSection = SectionFactory.createSection(sectionString);
-                currentSection.setIndex(counter);
-                sectionsList.add(currentSection);
-                counter += 1;
-            }
-
-        } catch (FileProcessingError error){
-            System.err.println(error.getMessage());
-            return null;
+        for (String sectionString: sectionsStrings) {
+            currentSection = SectionFactory.createSection(sectionString);
+            sectionsList.add(currentSection);
+            counter += 1;
         }
+
         return sectionsList;
     }
 
@@ -210,17 +160,18 @@ public class DirectoryProcessor {
     private static void printOutput(List<Section> sectionsList, File sourceDir){
         List<File> outputFiles;
         List<FileProcessingWarning> sectionWarnings;
+        int sectionLine = 0;
 
         for (Section section: sectionsList) {
             outputFiles = section.getFiles(sourceDir);
             sectionWarnings = section.getWarnings();
-
             for (FileProcessingWarning warning: sectionWarnings) {
-                handleWarning(warning, sectionsList, section.getIndex());
+                handleWarning(warning, sectionLine);
             }
             for (File file: outputFiles) {
                 System.out.println(file.getName());
             }
+            sectionLine += section.getNumOfLines();
         }
     }
 
@@ -241,56 +192,13 @@ public class DirectoryProcessor {
         try {
             testInvalidUsage(args);
             commandsFileLines = testIoProblems(args);
+            List<String> sectionsStrings = sectionsStringsHelper(commandsFileLines);
+            List<Section> sectionsList = createSectionsList(sectionsStrings);
+            File sourceDir = new File(args[SOURCE_DIRECTORY_INDEX]);
+            printOutput(sectionsList, sourceDir);
         } catch (FileProcessingError error){
             System.err.println(error.getMessage());
-            return;
         }
 
-
-        List<String> sectionsStrings;
-
-        try {
-            sectionsStrings = sectionsStringsHelper(commandsFileLines);
-        } catch (FileProcessingError error){
-            System.err.println(error.getMessage());
-            return;
-        }
-
-        List<Section> sectionsList = new ArrayList<>();
-
-        // Tries to create valid sections objects & handles warnings and errors if failed:
-        try{
-            Section currentSection;
-            int counter = 0;
-
-            for (String sectionString: sectionsStrings) {
-                currentSection = SectionFactory.createSection(sectionString);
-                currentSection.setIndex(counter);
-                sectionsList.add(currentSection);
-                counter += 1;
-            }
-
-        } catch (FileProcessingError error){
-            System.err.println(error.getMessage());
-            return;
-        }
-
-
-//        List<String> commandsFileLines = runBasicTests(args);
-
-//        if (commandsFileLines == null) {
-//            return;
-//        }
-//        List<String> sectionsStringsList = createSectionStrings(commandsFileLines);
-//        if (sectionsStringsList == null) {
-//            return;
-//        }
-//        List<Section> sectionsList = createSectionsList(sectionsStringsList);
-//        if (sectionsList == null) {
-//            return;
-//        }
-        File sourceDir = new File(args[SOURCE_DIRECTORY_INDEX]);
-
-        printOutput(sectionsList, sourceDir);
     }
 }

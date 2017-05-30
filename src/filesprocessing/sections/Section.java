@@ -20,7 +20,6 @@ public class Section {
     private Filter filter;
     private Order order;
     private List<FileProcessingWarning> warnings;
-    private int index;
     private int numOfLines;
 
 
@@ -30,7 +29,6 @@ public class Section {
         this.filter = filter;
         this.order = order;
         this.warnings = warnings;
-        this.index = 0;
         this.numOfLines = numOfLines;
     }
 
@@ -57,18 +55,6 @@ public class Section {
 
     public List<FileProcessingWarning> getWarnings() {
         return warnings;
-    }
-
-    public void addWarning(FileProcessingWarning warning) {
-        warnings.add(warning);
-    }
-
-    public int getIndex() {
-        return index;
-    }
-
-    public void setIndex(int index) {
-        this.index = index;
     }
 
     public int getNumOfLines() {

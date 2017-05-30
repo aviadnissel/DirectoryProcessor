@@ -141,12 +141,10 @@ public class DirectoryProcessor {
 
         // Tries to create valid sections objects & handles warnings and errors if failed:try{
         Section currentSection;
-        int counter = 0;
 
         for (String sectionString: sectionsStrings) {
             currentSection = SectionFactory.createSection(sectionString);
             sectionsList.add(currentSection);
-            counter += 1;
         }
 
         return sectionsList;

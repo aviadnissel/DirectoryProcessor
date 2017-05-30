@@ -41,8 +41,7 @@ A big issue with implementing the design is managing the exceptions and the line
 We chose to save the exception's relative line number in the Exception object, and to change it as it is thrown
 up through the stack.
 Another issue was having the filename as second ordering in case for example to files have the same size.
-We achieved that by having a stable order condition, using the fact that File.listFiles returns the list ordered
-by filename in the first place.
+We achieved that by having using java's thenComparing method, which allows us to use a secondary sort.
 A main code-duplication avoidance was implementing most of the Filter and Order code in the abstract classes,
 leaving only a small abstract method to be implemented for the actual filter and order. We used java's Comparator
 object for the Order class for it.
